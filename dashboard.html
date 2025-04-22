@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wolfbot - Lokales Dashboard</title>
+    <link rel="icon" href="logo.png" type="image/png" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="icons.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        .box {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button-main {
+            background-color: #3498db;
+            color: white;
+        }
+        .button-secondary {
+            background-color: #e74c3c;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="sidebar" id="navbar">
+            <div>
+                <div class="sidebar__logo">
+                    <img class="pixelated_image" src="https://mc-heads.net/avatar/Wolf/100" height="40" width="40" />
+                    <h2>WolfBot</h2>
+                </div>
+                <ul class="side-nav">
+                    <li class="side-nav__item side-nav__item-active">
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="side-nav__item">
+                        <span>Konsole</span>
+                    </li>
+                    <li class="side-nav__item">
+                        <span>Einstellungen</span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <header class="header">
+                <h1>Wolfbot Dashboard</h1>
+            </header>
+
+            <div class="box">
+                <h3>Kontostand (Konto)</h3>
+                <h1 id="money">0 €</h1>
+            </div>
+
+            <div class="box">
+                <h3>Kontostand (Bank)</h3>
+                <h1 id="bankmoney">0 €</h1>
+            </div>
+
+            <div class="box">
+                <h3>Logs</h3>
+                <textarea id="logsbox" rows="6" style="width: 100%;" readonly>Willkommen bei Wolfbot!</textarea>
+            </div>
+
+            <div class="box" style="text-align: center;">
+                <h3 id="statusHeader">Status: Manueller Modus</h3>
+                <div class="buttons">
+                    <button class="button button-main" id="startButton">Start</button>
+                    <button class="button button-secondary" id="stopButton">Stop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark/Light Mode Toggle
+        const body = document.body;
+        body.classList.add('light-mode');
+        
+        // Beispiel-Daten (lokal)
+        let botData = {
+            money: "100 €",
+            bankmoney: "500 €",
+            logs: "Bot ist bereit.\nKeine Serververbindung.",
+            status: false,
+            statustext: "offline"
+        };
+
+        // UI aktualisieren
+        function updateUI() {
+            document.getElementById('money').textContent = botData.money;
+            document.getElementById('bankmoney').textContent = botData.bankmoney;
+            document.getElementById('logsbox').value = botData.logs;
+            
+            const statusHeader = document.getElementById('statusHeader');
+            if (botData.status) {
+                statusHeader.textContent = "✅ Online (Simuliert)";
+                statusHeader.style.color = "green";
+            } else {
+                statusHeader.textContent = "❌ Offline (Simuliert)";
+                statusHeader.style.color = "red";
+            }
+        }
+
+        // Button-Aktionen
+        document.getElementById('startButton').addEventListener('click', () => {
+            botData.status = true;
+            botData.statustext = "online";
+            botData.logs += "\nBot gestartet (simuliert).";
+            updateUI();
+            Swal.fire("Wolfbot gestartet (Simulation)");
+        });
+
+        document.getElementById('stopButton').addEventListener('click', () => {
+            botData.status = false;
+            botData.statustext = "offline";
+            botData.logs += "\nBot gestoppt (simuliert).";
+            updateUI();
+            Swal.fire("Wolfbot gestoppt (Simulation)");
+        });
+
+        // Initiale UI-Aktualisierung
+        updateUI();
+    </script>
+</body>
+</html>
