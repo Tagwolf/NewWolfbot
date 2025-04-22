@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Wolfbot - Verkaufsbot</title>
+    <link rel="icon" href="logo.png" type="image/png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar__logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar__logo img {
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .sidebar__logo h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .side-nav {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .side-nav__header {
+            display: block;
+            padding: 10px 0;
+            font-weight: 600;
+            border-bottom: 1px solid #34495e;
+            margin-bottom: 10px;
+            color: #bdc3c7;
+        }
+
+        .side-nav__item {
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .side-nav__item:hover {
+            background-color: #34495e;
+        }
+
+        .side-nav__item-active {
+            background-color: #3498db;
+        }
+
+        .side-nav__item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .box {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .box h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .button-main {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .button-main:hover {
+            background-color: #2980b9;
+        }
+
+        .button-secondary {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .button-secondary:hover {
+            background-color: #c0392b;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .table th {
+            background-color: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 200px;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .input-container {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .input-container input {
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .main-content {
+                padding: 15px;
+            }
+            
+            .input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .input-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar" id="navbar">
+            <div>
+                <div class="sidebar__logo">
+                    <img class="pixelated_image" src="https://mc-heads.net/avatar/Wolf/100" height="40" width="40" />
+                    <h2>WolfBot</h2>
+                </div>
+
+                <ul class="side-nav">
+                    <span class="side-nav__header"><i class="fas fa-bookmark"></i> Menü</span>
+                    <li id="dashboardItem" class="side-nav__item">
+                        <span><i class="fas fa-home"></i> Dashboard</span>
+                    </li>
+                    <li id="consoleItem" class="side-nav__item">
+                        <span><i class="fas fa-terminal"></i> Konsole</span>
+                    </li>
+                    <li id="moduleItem" class="side-nav__item side-nav__item-active">
+                        <span><i class="fas fa-boxes"></i> Verkauf/Ankauf</span>
+                    </li>
+                    <li id="statisticItem" class="side-nav__item">
+                        <span><i class="fas fa-chart-bar"></i> Statistik</span>
+                    </li>
+                    <li id="settingsItem" class="side-nav__item">
+                        <span><i class="fas fa-cogs"></i> Einstellungen</span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <header class="header">
+                <h1>Verkauf/Ankauf</h1>
+            </header>
+            
+            <div class="box">
+                <div class="table-actions">
+                    <input id="search" class="input" placeholder="Suchen">
+                    <button class="button button-main" id="create-button"><i class="fas fa-plus"></i> Erstellen</button>
+                    <button class="button button-main" onclick="scan()"><i class="fas fa-search"></i> Verkauf scannen</button>
+                    <button class="button button-main" onclick="scanAnkauf()"><i class="fas fa-search"></i> Ankauf scannen</button>
+                </div>
+                
+                <table id="table" class="table" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <th><i class="fas fa-sort-alpha-down"></i> Anzeigename</th>
+                        <th><i class="fas fa-sort-alpha-down"></i> ID</th>
+                        <th><i class="fas fa-sort-numeric-down"></i> Vorhandene Anzahl</th>
+                        <th>VK / AK</th>
+                    </tr>
+                    <tr>
+                        <td>Eichenholz</td>
+                        <td>oak_log</td>
+                        <td>128</td>
+                        <td>10$ / 8$</td>
+                    </tr>
+                    <tr>
+                        <td>Stein</td>
+                        <td>stone</td>
+                        <td>256</td>
+                        <td>5$ / 4$</td>
+                    </tr>
+                    <tr>
+                        <td>Eisenbarren</td>
+                        <td>iron_ingot</td>
+                        <td>64</td>
+                        <td>20$ / 15$</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="box">
+                <h3><i class="fas fa-user"></i> Kopf Ankauf</h3>
+                
+                <div class="input-container">
+                    <label>Preis pro Kopf:</label>
+                    <input type="number" id="priceInputhead" class="input" value="10">
+                </div>
+                
+                <div id="nameInputsContainer">
+                    <div class="input-container">
+                        <input type="text" placeholder="Name" class="input name-input" value="Spieler1">
+                        <input type="number" placeholder="1" class="input amount-input" value="1" style="width: 80px;">
+                    </div>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <button class="button button-main" onclick="addNameAndAmountFields()"><i class="fas fa-plus"></i> Hinzufügen</button>
+                    <button class="button button-main" onclick="saveData()"><i class="fas fa-save"></i> Speichern</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        document.querySelectorAll('.side-nav__item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.side-nav__item').forEach(i => {
+                    i.classList.remove('side-nav__item-active');
+                });
+                this.classList.add('side-nav__item-active');
+                
+                // Hier würde normalerweise die Seite gewechselt werden
+                console.log(`Navigiere zu: ${this.textContent.trim()}`);
+            });
+        });
+
+        // Funktionen für die Kopf-Ankauf-Liste
+        function addNameAndAmountFields(predefinedValue = "", amount = 1) {
+            const container = document.getElementById('nameInputsContainer');
+            const inputContainer = document.createElement('div');
+            inputContainer.classList.add('input-container');
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.placeholder = 'Name';
+            nameInput.classList.add('input', 'name-input');
+            nameInput.value = predefinedValue;
+            inputContainer.appendChild(nameInput);
+
+            const amountInput = document.createElement('input');
+            amountInput.type = 'number';
+            amountInput.placeholder = '1';
+            amountInput.classList.add('input', 'amount-input');
+            amountInput.style.width = '80px';
+            amountInput.value = amount;
+            inputContainer.appendChild(amountInput);
+
+            container.appendChild(inputContainer);
+        }
+
+        function saveData() {
+            const inputContainers = document.querySelectorAll('.input-container');
+            const players = [];
+            
+            inputContainers.forEach(container => {
+                const nameInput = container.querySelector('.name-input');
+                const amountInput = container.querySelector('.amount-input');
+                
+                if (nameInput && nameInput.value) {
+                    const count = parseInt(amountInput.value) || 1;
+                    for (let i = 0; i < count; i++) {
+                        players.push(nameInput.value);
+                    }
+                }
+            });
+            
+            const price = document.getElementById('priceInputhead').value;
+            
+            Swal.fire({
+                title: 'Einstellungen gespeichert',
+                html: `Es werden <b>${players.length} Köpfe</b> zum Preis von <b>${price}$</b> pro Kopf angekauft.<br><br>
+                      <small>${players.slice(0, 5).join(', ')}${players.length > 5 ? '...' : ''}</small>`,
+                icon: 'success'
+            });
+            
+            // Hier würde normalerweise die Daten an den Server gesendet werden
+            console.log({
+                players: players,
+                pricePerHead: price
+            });
+        }
+
+        // Scan-Funktionen
+        function scan() {
+            Swal.fire({
+                title: "Verkaufskisten scannen",
+                text: "Der Bot wird nun alle Verkaufskisten scannen...",
+                icon: "info",
+                timer: 2000,
+                showConfirmButton: false
+            });
+            
+            // Hier würde normalerweise eine Anfrage an den Server gesendet werden
+            setTimeout(() => {
+                Swal.fire({
+                    title: "Scan abgeschlossen",
+                    text: "Alle Verkaufskisten wurden erfolgreich gescannt!",
+                    icon: "success"
+                });
+            }, 2000);
+        }
+
+        function scanAnkauf() {
+            Swal.fire({
+                title: "Ankaufskiste scannen",
+                input: "text",
+                inputPlaceholder: "X,Y,Z",
+                inputValue: "123,64,456",
+                showCancelButton: true,
+                confirmButtonText: "Scannen starten",
+                inputValidator: (value) => {
+                    if (!value) return 'Bitte Koordinaten eingeben';
+                    if (!value.match(/^-?\d+,-?\d+,-?\d+$/)) return 'Ungültiges Format (X,Y,Z)';
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Scan läuft...",
+                        text: `Scanne Kiste bei ${result.value}`,
+                        icon: "info",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    
+                    // Hier würde normalerweise eine Anfrage an den Server gesendet werden
+                    setTimeout(() => {
+                        Swal.fire({
+                            title: "Scan abgeschlossen",
+                            text: `Kiste bei ${result.value} wurde erfolgreich gescannt!`,
+                            icon: "success"
+                        });
+                    }, 2000);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
