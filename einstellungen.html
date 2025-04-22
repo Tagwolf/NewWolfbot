@@ -1,1 +1,497 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wolfbot - Einstellungen</title>
+    <link rel="icon" href="logo.png" type="image/png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar im Standard-Design */
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 0;
+        }
+        
+        .sidebar__logo {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #34495e;
+            margin-bottom: 10px;
+        }
+        
+        .sidebar__logo img {
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .sidebar__logo h2 {
+            margin: 0;
+            font-size: 18px;
+            color: #ecf0f1;
+        }
+        
+        .side-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .side-nav__item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            border-left: 4px solid transparent;
+        }
+        
+        .side-nav__item:hover {
+            background-color: #34495e;
+        }
+        
+        .side-nav__item-active {
+            background-color: #34495e;
+            border-left: 4px solid #3498db;
+        }
+        
+        .side-nav__item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+            color: #bdc3c7;
+        }
+        
+        .side-nav__item-active i {
+            color: #3498db;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+        }
+        
+        .header h1 i {
+            margin-right: 10px;
+        }
+        
+        /* Settings Boxes */
+        .settings-box {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .settings-box h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .settings-box h3 i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+        
+        .settings-box p {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #7f8c8d;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        select.form-control {
+            height: 40px;
+        }
+        
+        /* Button Styles */
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .form-control {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="sidebar" id="navbar">
+            <div>
+                <div class="sidebar__logo">
+                    <img class="pixelated_image" src="https://mc-heads.net/avatar/Wolf/100" height="40" width="40" />
+                    <h2>WolfBot</h2>
+                </div>
+
+                <ul class="side-nav">
+                    <li class="side-nav__item" onclick="window.location.href='dashboard.html'">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="side-nav__item" onclick="window.location.href='console.html'">
+                        <i class="fas fa-terminal"></i>
+                        <span>Konsole</span>
+                    </li>
+                    <li class="side-nav__item" onclick="window.location.href='module.html'">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Verkauf/Ankauf</span>
+                    </li>
+                    <li class="side-nav__item" onclick="window.location.href='statistic.html'">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Statistik</span>
+                    </li>
+                    <li class="side-nav__item side-nav__item-active">
+                        <i class="fas fa-cog"></i>
+                        <span>Einstellungen</span>
+                    </li>
+                </ul>
+            </div>
+
+            <ul class="side-nav">
+                <li class="side-nav__item last-item">
+                    <a onclick="deleteAllCookies()"><i class="fas fa-sign-out-alt"></i> Ausloggen</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <header class="header">
+                <h1><i class="fas fa-cog"></i> Einstellungen</h1>
+            </header>
+
+            <div class="settings-box">
+                <h3><i class="fas fa-server"></i> Server-Einstellungen</h3>
+                <div class="form-group">
+                    <label for="setting-server">Server</label>
+                    <select id="setting-server" class="form-control">
+                        <option value="griefergames">GrieferGames</option>
+                        <option value="other">Anderer Server</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="griefergames-settings">
+                    <label for="setting-citybuild">CityBuild</label>
+                    <select id="setting-citybuild" class="form-control">
+                        <option value="cb1">CityBuild 1</option>
+                        <option value="cb2">CityBuild 2</option>
+                        <option value="cb3">CityBuild 3</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="setting-autojoin">AutoJoin</label>
+                    <select id="setting-autojoin" class="form-control">
+                        <option value="on">Aktiviert</option>
+                        <option value="off">Deaktiviert</option>
+                    </select>
+                    <p class="help-text">Automatisch zum ausgewählten CityBuild joinen</p>
+                </div>
+            </div>
+
+            <div class="settings-box">
+                <h3><i class="fas fa-robot"></i> Bot-Einstellungen</h3>
+                <div class="form-group">
+                    <label for="setting-joincommand">Start-Command</label>
+                    <input type="text" id="setting-joincommand" class="form-control" placeholder="/shop">
+                    <p class="help-text">Wird ausgeführt nach dem Joinen</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="setting-delay">Aktionsverzögerung (ms)</label>
+                    <input type="number" id="setting-delay" class="form-control" value="500" min="100" max="5000">
+                    <p class="help-text">Verzögerung zwischen Bot-Aktionen</p>
+                </div>
+            </div>
+
+            <div class="settings-box">
+                <h3><i class="fas fa-map-marker-alt"></i> Positions-Einstellungen</h3>
+                <div class="form-group">
+                    <label for="setting-kammercenter">Verkaufsbereich Start (x,y,z)</label>
+                    <input type="text" id="setting-kammercenter" class="form-control" placeholder="1023,23,-8312">
+                </div>
+                
+                <div class="form-group">
+                    <label for="setting-kammercenter2">Verkaufsbereich Ende (x,y,z)</label>
+                    <input type="text" id="setting-kammercenter2" class="form-control" placeholder="1053,25,-8312">
+                </div>
+                
+                <div class="form-group">
+                    <label for="setting-dropcoords">Drop-Position (x,y,z)</label>
+                    <input type="text" id="setting-dropcoords" class="form-control" placeholder="1053,25,-8312">
+                </div>
+            </div>
+
+            <div class="settings-box">
+                <h3><i class="fas fa-comment-dots"></i> Nachrichten</h3>
+                <div class="form-group">
+                    <label for="setting-verkaufmsg">Verkaufsnachricht</label>
+                    <input type="text" id="setting-verkaufmsg" class="form-control" placeholder="Danke für deinen Kauf!">
+                </div>
+                
+                <div class="form-group">
+                    <label for="setting-ankaufmsg">Ankaufsnachricht</label>
+                    <input type="text" id="setting-ankaufmsg" class="form-control" placeholder="Danke für den Verkauf!">
+                </div>
+            </div>
+
+            <div class="settings-box">
+                <h3><i class="fas fa-palette"></i> Design</h3>
+                <button id="modeToggleBtn" class="btn btn-primary">
+                    <i class="fas fa-moon"></i> Dunkelmodus umschalten
+                </button>
+                <button class="btn btn-secondary" onclick="resetSettings()">
+                    <i class="fas fa-undo"></i> Standardeinstellungen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        document.querySelectorAll('.side-nav__item').forEach(item => {
+            item.addEventListener('click', function() {
+                if (!this.classList.contains('side-nav__item-active')) {
+                    document.querySelectorAll('.side-nav__item').forEach(i => {
+                        i.classList.remove('side-nav__item-active');
+                    });
+                    this.classList.add('side-nav__item-active');
+                    
+                    // Hier würde normalerweise die Seite gewechselt werden
+                    const pageName = this.querySelector('span').textContent;
+                    console.log(`Navigiere zu: ${pageName}`);
+                }
+            });
+        });
+
+        // Dark/Light Mode Toggle
+        const body = document.body;
+        const modeToggleBtn = document.getElementById('modeToggleBtn');
+        
+        // Load saved mode or default to light
+        const savedMode = localStorage.getItem('preferredMode') || 'light-mode';
+        body.classList.add(savedMode);
+        
+        modeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            body.classList.toggle('light-mode');
+            localStorage.setItem('preferredMode', 
+                body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode');
+            
+            // Update button text
+            if (body.classList.contains('dark-mode')) {
+                modeToggleBtn.innerHTML = '<i class="fas fa-sun"></i> Hellmodus umschalten';
+            } else {
+                modeToggleBtn.innerHTML = '<i class="fas fa-moon"></i> Dunkelmodus umschalten';
+            }
+        });
+
+        // Settings Management
+        let settings = {
+            server: "griefergames",
+            citybuild: "cb1",
+            autojoin: "on",
+            joincommand: "/shop",
+            delay: "500",
+            kammercenter: "1023,23,-8312",
+            kammercenter2: "1053,25,-8312",
+            dropcoords: "1053,25,-8312",
+            verkaufmsg: "Danke für deinen Kauf!",
+            ankaufmsg: "Danke für den Verkauf!"
+        };
+
+        // Load settings
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('wolfbotSettings');
+            if (savedSettings) {
+                settings = JSON.parse(savedSettings);
+            }
+            
+            // Apply settings to form
+            document.getElementById('setting-server').value = settings.server;
+            document.getElementById('setting-citybuild').value = settings.citybuild;
+            document.getElementById('setting-autojoin').value = settings.autojoin;
+            document.getElementById('setting-joincommand').value = settings.joincommand;
+            document.getElementById('setting-delay').value = settings.delay;
+            document.getElementById('setting-kammercenter').value = settings.kammercenter;
+            document.getElementById('setting-kammercenter2').value = settings.kammercenter2;
+            document.getElementById('setting-dropcoords').value = settings.dropcoords;
+            document.getElementById('setting-verkaufmsg').value = settings.verkaufmsg;
+            document.getElementById('setting-ankaufmsg').value = settings.ankaufmsg;
+            
+            // Update UI based on settings
+            updateServerSettingsVisibility();
+        }
+
+        // Save settings
+        function saveSettings() {
+            settings = {
+                server: document.getElementById('setting-server').value,
+                citybuild: document.getElementById('setting-citybuild').value,
+                autojoin: document.getElementById('setting-autojoin').value,
+                joincommand: document.getElementById('setting-joincommand').value,
+                delay: document.getElementById('setting-delay').value,
+                kammercenter: document.getElementById('setting-kammercenter').value,
+                kammercenter2: document.getElementById('setting-kammercenter2').value,
+                dropcoords: document.getElementById('setting-dropcoords').value,
+                verkaufmsg: document.getElementById('setting-verkaufmsg').value,
+                ankaufmsg: document.getElementById('setting-ankaufmsg').value
+            };
+            
+            localStorage.setItem('wolfbotSettings', JSON.stringify(settings));
+            Swal.fire('Einstellungen gespeichert!', '', 'success');
+        }
+
+        // Reset to default settings
+        function resetSettings() {
+            Swal.fire({
+                title: 'Einstellungen zurücksetzen?',
+                text: 'Alle Einstellungen werden auf Standardwerte zurückgesetzt.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ja, zurücksetzen',
+                cancelButtonText: 'Abbrechen'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem('wolfbotSettings');
+                    loadSettings();
+                    Swal.fire('Erfolg!', 'Einstellungen wurden zurückgesetzt.', 'success');
+                }
+            });
+        }
+
+        // Update visibility of server-specific settings
+        function updateServerSettingsVisibility() {
+            const server = document.getElementById('setting-server').value;
+            const ggSettings = document.getElementById('griefergames-settings');
+            
+            if (server === 'griefergames') {
+                ggSettings.style.display = 'block';
+            } else {
+                ggSettings.style.display = 'none';
+            }
+        }
+
+        // Event listeners
+        document.getElementById('setting-server').addEventListener('change', function() {
+            updateServerSettingsVisibility();
+            saveSettings();
+        });
+        
+        document.querySelectorAll('select, input').forEach(element => {
+            element.addEventListener('change', saveSettings);
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettings();
+            
+            // Set initial button text for dark mode
+            if (body.classList.contains('dark-mode')) {
+                modeToggleBtn.innerHTML = '<i class="fas fa-sun"></i> Hellmodus umschalten';
+            }
+        });
+
+        // Cookie functions
+        function deleteAllCookies() {
+            document.cookie.split(";").forEach(cookie => {
+                document.cookie = cookie.replace(/^ +/, "").split("=")[0] + 
+                    "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            });
+            window.location.href = "login.html";
+        }
+    </script>
+</body>
+</html>
