@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wolfbot - Einstellungen</title>
+    <link rel="icon" href="logo.png" type="image/png" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="icons.css">
+    <link rel="stylesheet" href="changes.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        .box {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button-main {
+            background-color: #3498db;
+            color: white;
+        }
+        .button-secondary {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .side-nav__item {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .side-nav__item:hover {
+            background-color: #34495e;
+        }
+        .side-nav__item-active {
+            background-color: #3498db;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="sidebar" id="navbar">
+            <div>
+                <span class="side-nav__header"><span class="icon-users mr"></span>Account</span>
+                <div class="sidebar__logo">
+                    <img class="pixelated_image" src="https://mc-heads.net/avatar/Wolf/100" height="40" width="40" />
+                    <h2>WolfBot</h2>
+                </div>
+
+                <ul class="side-nav">
+                    <span class="side-nav__header"><span class="icon-bookmark mr"></span>Menu</span>
+                    <li class="side-nav__item" onclick="window.location.href='dashboard.html'">
+                        <span><span class="icon-home3 mr"></span>Dashboard</span>
+                    </li>
+                    <li class="side-nav__item" onclick="window.location.href='console.html'">
+                        <span><span class="icon-terminal mr"></span>Konsole</span>
+                    </li>
+                    <li class="side-nav__item" onclick="window.location.href='viewer.html'">
+                        <span><span class="icon-eye mr"></span>Viewer</span>
+                    </li>
+                    <li class="side-nav__item" onclick="window.location.href='module.html'">
+                        <span><span class="icon-stack mr"></span>Verkauf / Ankauf</span>
+                    </li>
+                    <li class="side-nav__item" onclick="window.location.href='statistic.html'">
+                        <span><span class="icon-stats-bars mr"></span>Statistik</span>
+                    </li>
+                    <li class="side-nav__item side-nav__item-active" onclick="window.location.href='einstellungen.html'">
+                        <span><span class="icon-cogs mr"></span>Einstellungen</span>
+                    </li>
+                </ul>
+            </div>
+
+            <ul class="side-nav">
+                <li class="side-nav__item last-item">
+                    <a onclick="deleteAllCookies()"><span class="icon-exit mr"></span>Ausloggen</a>
+                </li>
+                <li class="side-nav__item last-item">
+                    <a id="modeToggleBtn"><span class="icon-brightness-contrast mr"></span>Dunkler/Heller Modus</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <header class="header">
+                <h1><span class="icon-cogs mr2"></span>Einstellungen</h1>
+            </header>
+
+            <div class="box">
+                <h3>Server</h3>
+                <p>Stellt ein, auf welchem Server der Bot handeln soll</p>
+                <select id="setting-server" class="setting-self">
+                    <option value="griefergames">GrieferGames</option>
+                </select>
+            </div>
+
+            <div class="box" id="griefergames-only">
+                <h3>CityBuild</h3>
+                <p>Stellt ein, auf welchen CityBuild der Bot joinen soll</p>
+                <select id="setting-citybuild" class="setting-self">
+                    <option value="cb1">CityBuild 1</option>
+                    <option value="cb2">CityBuild 2</option>
+                    <option value="cb3">CityBuild 3</option>
+                    <!-- Weitere Optionen hier -->
+                </select>
+            </div>
+
+            <div class="box">
+                <h3>AutoJoin</h3>
+                <p>Stellt ein, ob der Bot automatisch im Portalraum zum Portal laufen soll</p>
+                <select id="setting-autojoin" class="setting-self">
+                    <option value="on">An</option>
+                    <option value="off">Aus</option>
+                </select>
+            </div>
+
+            <div class="box">
+                <h3>Start-Command</h3>
+                <p>Der Command der vom Bot ausgeführt wird, sobald der Bot gejoint ist</p>
+                <input type="text" id="setting-joincommand" class="setting-self" placeholder="/shop">
+            </div>
+
+            <div class="box">
+                <h3>Kammer-Einstellungen</h3>
+                <p>Koordinaten des Verkaufsbereichs (x,y,z)</p>
+                <input type="text" id="setting-kammercenter" class="setting-self" placeholder="1023,23,-8312">
+                <input type="text" id="setting-kammercenter2" class="setting-self" placeholder="1053,25,-8312">
+                
+                <p>Drop-Position (x,y,z)</p>
+                <input type="text" id="setting-dropcoords" class="setting-self" placeholder="1053,25,-8312">
+            </div>
+
+            <div class="box">
+                <h3>Nachrichten</h3>
+                <p>Verkaufsnachricht:</p>
+                <input type="text" id="setting-verkaufmsg" class="setting-self" placeholder="Danke für deinen Kauf!">
+                
+                <p>Ankaufsnachricht:</p>
+                <input type="text" id="setting-ankaufmsg" class="setting-self" placeholder="Danke für den Verkauf!">
+            </div>
+
+            <div class="box">
+                <h3>Theme</h3>
+                <button id="modeToggleBtn" class="button button-main">Dunkel/Hell Modus wechseln</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark/Light Mode Toggle
+        const body = document.body;
+        const modeToggleBtn = document.getElementById('modeToggleBtn');
+        
+        // Load saved mode or default to light
+        const savedMode = localStorage.getItem('preferredMode') || 'light-mode';
+        body.classList.add(savedMode);
+        
+        modeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            body.classList.toggle('light-mode');
+            localStorage.setItem('preferredMode', 
+                body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode');
+        });
+
+        // Cookie functions
+        function deleteAllCookies() {
+            document.cookie.split(";").forEach(cookie => {
+                document.cookie = cookie.replace(/^ +/, "").split("=")[0] + 
+                    "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            });
+            window.location.href = "login.html";
+        }
+
+        // Simulated data storage
+        let settings = {
+            server: "griefergames",
+            citybuild: "cb1",
+            autojoin: "on",
+            joincommand: "/shop",
+            kammercenter: "1023,23,-8312",
+            kammercenter2: "1053,25,-8312",
+            dropcoords: "1053,25,-8312",
+            verkaufmsg: "Danke für deinen Kauf!",
+            ankaufmsg: "Danke für den Verkauf!"
+        };
+
+        // Load settings
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('wolfbotSettings');
+            if (savedSettings) {
+                settings = JSON.parse(savedSettings);
+            }
+            
+            document.getElementById('setting-server').value = settings.server;
+            document.getElementById('setting-citybuild').value = settings.citybuild;
+            document.getElementById('setting-autojoin').value = settings.autojoin;
+            document.getElementById('setting-joincommand').value = settings.joincommand;
+            document.getElementById('setting-kammercenter').value = settings.kammercenter;
+            document.getElementById('setting-kammercenter2').value = settings.kammercenter2;
+            document.getElementById('setting-dropcoords').value = settings.dropcoords;
+            document.getElementById('setting-verkaufmsg').value = settings.verkaufmsg;
+            document.getElementById('setting-ankaufmsg').value = settings.ankaufmsg;
+        }
+
+        // Save settings
+        function saveSettings() {
+            settings.server = document.getElementById('setting-server').value;
+            settings.citybuild = document.getElementById('setting-citybuild').value;
+            settings.autojoin = document.getElementById('setting-autojoin').value;
+            settings.joincommand = document.getElementById('setting-joincommand').value;
+            settings.kammercenter = document.getElementById('setting-kammercenter').value;
+            settings.kammercenter2 = document.getElementById('setting-kammercenter2').value;
+            settings.dropcoords = document.getElementById('setting-dropcoords').value;
+            settings.verkaufmsg = document.getElementById('setting-verkaufmsg').value;
+            settings.ankaufmsg = document.getElementById('setting-ankaufmsg').value;
+            
+            localStorage.setItem('wolfbotSettings', JSON.stringify(settings));
+            Swal.fire('Einstellungen gespeichert!', '', 'success');
+        }
+
+        // Event listeners for settings changes
+        document.querySelectorAll('.setting-self').forEach(element => {
+            element.addEventListener('change', saveSettings);
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettings();
+        });
+    </script>
+</body>
+</html>
