@@ -67,37 +67,45 @@
 
 <body>
     <div class="container">
-        <nav class="sidebar" id="navbar">
-            <div>
-                <span class="side-nav__header"><span class="icon-users mr"></span>Account</span>
-                <div class="sidebar__logo">
-                    <img class="pixelated_image" src="https://mc-heads.net/avatar/Wolf/100" height="40" width="40" />
-                    <h2>WolfBot</h2>
-                </div>
+<nav class="sidebar" id="navbar">
+    <div>
+        <span class="side-nav__header"><span class="icon-users mr"></span>Account</span>
+        <div class="sidebar__logo">
+            <img onclick="switchAccount()" class="pixelated_image" src="https://mc-heads.net/avatar/ShadowWolf_CB/100" height="40" width="40" />
+            <h2>WolfBot</h2>
+        </div>
 
-                <ul class="side-nav">
-                    <span class="side-nav__header"><span class="icon-bookmark mr"></span>Menu</span>
-                    <li class="side-nav__item" onclick="window.location.href='dashboard.html'">
-                        <span><span class="icon-home3 mr"></span>Dashboard</span>
-                    </li>
-                    <li class="side-nav__item" onclick="window.location.href='console.html'">
-                        <span><span class="icon-terminal mr"></span>Konsole</span>
-                    </li>
-                    <li class="side-nav__item" onclick="window.location.href='viewer.html'">
-                        <span><span class="icon-eye mr"></span>Viewer</span>
-                    </li>
-                    <li class="side-nav__item" onclick="window.location.href='module.html'">
-                        <span><span class="icon-stack mr"></span>Verkauf / Ankauf</span>
-                    </li>
-                    <li class="side-nav__item" onclick="window.location.href='statistic.html'">
-                        <span><span class="icon-stats-bars mr"></span>Statistik</span>
-                    </li>
-                    <li class="side-nav__item side-nav__item-active" onclick="window.location.href='einstellungen.html'">
-                        <span><span class="icon-cogs mr"></span>Einstellungen</span>
-                    </li>
-                </ul>
-            </div>
-
+        <ul class="side-nav">
+            <span class="side-nav__header"><span class="icon-bookmark mr"></span>Menu</span>
+            <li class="side-nav__item" onclick="window.location.href='dashboard.html'">
+                <span><span class="icon-home3 mr"></span>Dashboard</span>
+            </li>
+            <li class="side-nav__item" onclick="window.location.href='console.html'">
+                <span><span class="icon-terminal mr"></span>Konsole</span>
+            </li>
+            <li class="side-nav__item" onclick="window.location.href='viewer.html'">
+                <span><span class="icon-eye mr"></span>Viewer</span>
+            </li>
+            <li class="side-nav__item" onclick="window.location.href='module.html'">
+                <span><span class="icon-stack mr"></span>Verkauf / Ankauf</span>
+            </li>
+            <li class="side-nav__item" onclick="window.location.href='statistic.html'">
+                <span><span class="icon-stats-bars mr"></span>Statistik</span>
+            </li>
+            <li class="side-nav__item side-nav__item-active" onclick="window.location.href='einstellungen.html'">
+                <span><span class="icon-cogs mr"></span>Einstellungen</span>
+            </li>
+        </ul>
+    </div>
+    <ul class="side-nav">
+        <li class="side-nav__item last-item">
+            <a onclick="deleteAllCookies()"><span class="icon-exit mr"></span>Ausloggen</a>
+        </li>
+        <li class="side-nav__item last-item">
+            <a id="modeToggleBtn"><span class="icon-brightness-contrast mr"></span>Dunkler/Heller Modus</a>
+        </li>
+    </ul>
+</nav>
             <ul class="side-nav">
                 <li class="side-nav__item last-item">
                     <a onclick="deleteAllCookies()"><span class="icon-exit mr"></span>Ausloggen</a>
