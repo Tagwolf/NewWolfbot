@@ -1,147 +1,74 @@
-
 <!DOCTYPE html>
-<html lang="de">
+<html style="font-size: 16px;" lang="de">
+
 <head>
-  <meta charset="UTF-8">
+  <script src="https://novabot.statuspage.io/embed/script.js"></script>
+  <title>Login - NewWolfBot</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NewWolfbot – Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Orbitron:wght@600&display=swap" rel="stylesheet">
-  <style>
-    /* ... identisches CSS wie vorher ... */
-    body {
-      background-color: #121212;
-      color: white;
-      font-family: 'Montserrat', sans-serif;
-      display: flex;
-      min-height: 100vh;
-    }
+  <meta name="robots" content="noindex,nofollow">
+  <meta charset="utf-8">
+  <meta name="keywords" content="">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="">
+  <meta name="theme-color" content="#478ac9">
+  <meta property="og:title" content="Login">
+  <meta property="og:type" content="website">
+  <meta data-intl-tel-input-cdn-path="intlTelInput/">
 
-    .sidebar {
-      width: 240px;
-      background-color: #1e1e1e;
-      padding: 30px 20px;
-      display: flex;
-      flex-direction: column;
-    }
+  <meta name="keywords"
+    content="GrieferGames Bot, GrieferGames, GG, GrieferBot, NewWolfBot, Bot, Minecraft Bot, KI, AI, Minecraft, Verkaufs Bot, Ankaufs Bot, Verkaufsbot, Ankaufsbot, Ankaufs und Verkaufsbot">
+  <meta
+    content="Mit NewWolfBot kannst du deinen eigenen GrieferGames Verkaufs-/Ankaufsbot über ein intuitives Webpanel hosten – ohne externe KI."
+    property="og:description" />
 
-    .sidebar h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.8rem;
-      margin-bottom: 40px;
-      color: #ffffff;
-    }
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="shortcut icon" href="logo.png" type="image/x-icon">
 
-    .sidebar a {
-      text-decoration: none;
-      color: #aaa;
-      margin-bottom: 15px;
-      font-size: 1rem;
-      transition: color 0.2s;
-    }
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="./icons.css" media="screen">
+  <link rel="stylesheet" href="./custom-design.css" media="screen">
 
-    .sidebar a.active,
-    .sidebar a:hover {
-      color: #fff;
-    }
-
-    .content {
-      flex: 1;
-      padding: 40px;
-    }
-
-    h2 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 1.1rem;
-      color: #ccc;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 12px 20px;
-      background-color: #5865F2;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: bold;
-      transition: background-color 0.3s;
-    }
-
-    .btn:hover {
-      background-color: #4752C4;
-    }
-
-    .user-info {
-      margin-top: 20px;
-    }
-
-    .user-info img {
-      border-radius: 50%;
-      width: 64px;
-      height: 64px;
-    }
-
-    .user-info span {
-      margin-left: 10px;
-      font-size: 1.1rem;
-      vertical-align: middle;
-    }
-  </style>
-</head>
-<body>
-  <div class="sidebar">
-    <h1>NewWolfbot</h1>
-    <a href="index.html" class="active">Home</a>
-    <a href="dashboard.html">Dashboard</a>
-  </div>
-  <div class="content">
-    <h2>Willkommen beim NewWolfbot!</h2>
-    <p>Logge dich mit Discord ein, um deinen Minecraft-Bot zu steuern.</p>
-    <a id="login-btn" class="btn" href="#">Mit Discord einloggen</a>
-    <div class="user-info" id="user-info" style="display:none;">
-      <img id="avatar" src="" alt="Avatar"><span id="username"></span>
-    </div>
-  </div>
-
-  <script>
-    const clientId = "1312429365363081257"; // Ersetzen
-    const redirectUri = "https://tagwolf.github.io/NewWolfbot/";
-    const scope = "identify";
-    const loginBtn = document.getElementById("login-btn");
-
-    // Check if we already have a token
-    const hash = window.location.hash;
-    if (hash.includes("access_token")) {
-      const token = new URLSearchParams(hash.substring(1)).get("access_token");
-
-      // Get user data from Discord API
-      fetch("https://discord.com/api/users/@me", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(res => res.json())
-        .then(user => {
-          loginBtn.style.display = "none";
-          document.getElementById("user-info").style.display = "block";
-          document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
-          document.getElementById("username").textContent = `${user.username}#${user.discriminator}`;
-
-          // Optional: Weiterleitung
-          // window.location.href = "dashboard.html";
-        });
-    }
-
-    loginBtn.onclick = () => {
-      const oauthUrl =
-        `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${scope}`;
-      window.location.href = oauthUrl;
-    };
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": "NewWolfBot"
+  }
   </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (window.location.hostname.includes("grieferbot")) {
+        alert("Bitte nutze NewWolfBot über https://tagwolf.github.io/NewWolfbot/");
+        window.location.href = "https://tagwolf.github.io/NewWolfbot/";
+      }
+    });
+  </script>
+</head>
+
+<body>
+
+  <div class="login">
+    <div class="card">
+      <div class="symbol icon-users"></div>
+      <h1 class="title">Einloggen</h1>
+      <p class="description">Schnell einloggen mit einem deiner sozialen Konten</p>
+      <a class="link btn-slow-transition"
+        href="https://discord.com/oauth2/authorize?client_id=1312429365363081257&response_type=code&redirect_uri=https%3A%2F%2Ftagwolf.github.io%2FNewWolfbot%2Fdashboard.html&scope=identify">
+        Mit Discord fortfahren
+      </a>
+    </div>
+
+    <p>© 2024 NewWolfBot, all rights reserved.</p>
+    <a href="/datenschutz" style="color: rgb(255, 255, 255);">Datenschutz</a> |
+    <a href="/agb" style="color: rgb(255, 255, 255);">AGBs</a>
+  </div>
+  <a class="login-title animate__animated animate__fadeInDown" href="/">NewWolfBot</a>
+  <a class="login-remove animate__animated animate__fadeInDown" href="/">✕</a>
+  <div id="themeButton" class="theme-button">
+    <span id="themeButtonValue" class="icon-contrast"></span>
+  </div>
+  <script src="./landing-dark-theme.js"></script>
 </body>
+
 </html>
