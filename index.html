@@ -3,43 +3,121 @@
 
 <head>
   <script src="https://novabot.statuspage.io/embed/script.js"></script>
-  <title>Login - NewWolfBot</title>
+  <title>Login - WolfBot</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <meta charset="utf-8">
-  <meta name="keywords" content="">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="description" content="">
   <meta name="theme-color" content="#478ac9">
-  <meta property="og:title" content="Login">
-  <meta property="og:type" content="website">
-  <meta data-intl-tel-input-cdn-path="intlTelInput/">
-
-  <meta name="keywords"
-    content="GrieferGames Bot, GrieferGames, GG, GrieferBot, NewWolfBot, Bot, Minecraft Bot, KI, AI, Minecraft, Verkaufs Bot, Ankaufs Bot, Verkaufsbot, Ankaufsbot, Ankaufs und Verkaufsbot">
-  <meta
-    content="Mit NewWolfBot kannst du deinen eigenen GrieferGames Verkaufs-/Ankaufsbot über ein intuitives Webpanel hosten – ohne externe KI."
-    property="og:description" />
-
   <link rel="icon" href="logo.png" type="image/png" />
   <link rel="shortcut icon" href="logo.png" type="image/x-icon">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-  <link rel="stylesheet" href="./icons.css" media="screen">
-  <link rel="stylesheet" href="./custom-design.css" media="screen">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "Organization",
-    "name": "NewWolfBot"
-  }
-  </script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .login {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    .title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .description {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      color: #ccc;
+    }
+
+    .link {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      background-color: #5865f2;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    .link:hover {
+      background-color: #4752c4;
+    }
+
+    .symbol {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .login a {
+      color: #aaa;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+
+    .login a:hover {
+      text-decoration: underline;
+    }
+
+    .login-title, .login-remove {
+      position: absolute;
+      top: 1rem;
+      font-size: 1.5rem;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .login-title {
+      left: 1rem;
+      font-weight: 700;
+    }
+
+    .login-remove {
+      right: 1rem;
+    }
+
+    .theme-button {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      cursor: pointer;
+    }
+
+    .icon-contrast {
+      font-size: 1.5rem;
+    }
+  </style>
+
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       if (window.location.hostname.includes("grieferbot")) {
-        alert("Bitte nutze NewWolfBot über https://tagwolf.github.io/NewWolfbot/");
+        alert("Bitte nutze WolfBot über https://tagwolf.github.io/NewWolfbot/");
         window.location.href = "https://tagwolf.github.io/NewWolfbot/";
       }
     });
@@ -47,10 +125,9 @@
 </head>
 
 <body>
-
   <div class="login">
-    <div class="card">
-      <div class="symbol icon-users"></div>
+    <div class="card animate__animated animate__fadeInUp">
+      <div class="symbol icon-users">👥</div>
       <h1 class="title">Einloggen</h1>
       <p class="description">Schnell einloggen mit einem deiner sozialen Konten</p>
       <a class="link btn-slow-transition"
@@ -58,16 +135,18 @@
         Mit Discord fortfahren
       </a>
     </div>
-
-    <p>© 2024 NewWolfBot, all rights reserved.</p>
-    <a href="/datenschutz" style="color: rgb(255, 255, 255);">Datenschutz</a> |
-    <a href="/agb" style="color: rgb(255, 255, 255);">AGBs</a>
+    <p style="margin-top: 2rem;">© 2024 WolfBot, all rights reserved.</p>
+    <a href="/datenschutz">Datenschutz</a> |
+    <a href="/agb">AGBs</a>
   </div>
+
   <a class="login-title animate__animated animate__fadeInDown" href="/">NewWolfBot</a>
   <a class="login-remove animate__animated animate__fadeInDown" href="/">✕</a>
+
   <div id="themeButton" class="theme-button">
-    <span id="themeButtonValue" class="icon-contrast"></span>
+    <span id="themeButtonValue" class="icon-contrast">🌓</span>
   </div>
+
   <script src="./landing-dark-theme.js"></script>
 </body>
 
