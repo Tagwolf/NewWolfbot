@@ -2,11 +2,18 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Wolfbot - Verkaufsbot</title>
+    <title>Wolfbot - Verkauf/Ankauf</title>
     <link rel="icon" href="logo.png" type="image/png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -20,49 +27,47 @@
             min-height: 100vh;
         }
 
+        /* Sidebar im einheitlichen Stil */
         .sidebar {
             width: 250px;
-            background-color: #2c3e50;
+            background-color: var(--dark-color);
             color: white;
-            padding: 20px;
+            padding: 0;
         }
 
         .sidebar__logo {
             display: flex;
             align-items: center;
-            margin-bottom: 30px;
+            padding: 20px;
+            border-bottom: 1px solid #34495e;
+            margin-bottom: 10px;
         }
 
         .sidebar__logo img {
             border-radius: 50%;
             margin-right: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .sidebar__logo h2 {
             margin: 0;
             font-size: 18px;
+            color: var(--light-color);
         }
 
         .side-nav {
             list-style: none;
-            margin-bottom: 30px;
-        }
-
-        .side-nav__header {
-            display: block;
-            padding: 10px 0;
-            font-weight: 600;
-            border-bottom: 1px solid #34495e;
-            margin-bottom: 10px;
-            color: #bdc3c7;
+            padding: 0;
+            margin: 0;
         }
 
         .side-nav__item {
-            padding: 10px;
-            border-radius: 5px;
+            padding: 12px 20px;
             cursor: pointer;
-            margin-bottom: 5px;
-            transition: background-color 0.2s;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            border-left: 4px solid transparent;
         }
 
         .side-nav__item:hover {
@@ -70,15 +75,22 @@
         }
 
         .side-nav__item-active {
-            background-color: #3498db;
+            background-color: #34495e;
+            border-left: 4px solid var(--primary-color);
         }
 
         .side-nav__item i {
             margin-right: 10px;
             width: 20px;
             text-align: center;
+            color: #bdc3c7;
         }
 
+        .side-nav__item-active i {
+            color: var(--primary-color);
+        }
+
+        /* Main Content */
         .main-content {
             flex: 1;
             padding: 20px;
@@ -91,99 +103,186 @@
         .header h1 {
             font-size: 24px;
             margin: 0;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
         }
 
-        .box {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
+        .header h1 i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        /* Table Actions */
+        .table-actions {
+            display: flex;
+            justify-content: space-between;
             margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .box h3 {
-            margin-top: 0;
-            margin-bottom: 15px;
-            color: #2c3e50;
+        .search-container {
+            display: flex;
+            align-items: center;
         }
 
-        .button {
+        .search-container i {
+            margin-right: 10px;
+            color: #7f8c8d;
+        }
+
+        .search-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        /* Buttons */
+        .btn {
             padding: 10px 15px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            margin: 5px;
             font-size: 14px;
-            transition: background-color 0.2s;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
         }
 
-        .button-main {
-            background-color: #3498db;
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
             color: white;
         }
 
-        .button-main:hover {
-            background-color: #2980b9;
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
         }
 
-        .button-secondary {
-            background-color: #e74c3c;
+        .btn-secondary {
+            background-color: #95a5a6;
             color: white;
         }
 
-        .button-secondary:hover {
-            background-color: #c0392b;
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
         }
 
-        .table {
+        /* Table */
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
         }
 
-        .table th {
-            background-color: #3498db;
+        th {
+            background-color: var(--primary-color);
             color: white;
             padding: 12px;
             text-align: left;
         }
 
-        .table td {
+        td {
             padding: 12px;
             border-bottom: 1px solid #ddd;
         }
 
-        .table tr:nth-child(even) {
+        tr:nth-child(even) {
             background-color: #f9f9f9;
         }
 
-        .table tr:hover {
+        tr:hover {
             background-color: #f1f1f1;
         }
 
-        .input {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-right: 10px;
-            width: 200px;
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary-color);
+            margin: 0 5px;
         }
 
-        .input:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-
-        .input-container {
-            display: flex;
-            margin-bottom: 10px;
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
             align-items: center;
         }
 
-        .input-container input {
-            margin-right: 10px;
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
 
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: var(--dark-color);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -191,21 +290,18 @@
             
             .sidebar {
                 width: 100%;
-                padding: 15px;
             }
             
-            .main-content {
-                padding: 15px;
-            }
-            
-            .input {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-            
-            .input-container {
+            .table-actions {
                 flex-direction: column;
-                align-items: flex-start;
+            }
+            
+            .search-container {
+                width: 100%;
+            }
+            
+            .search-input {
+                width: 100%;
             }
         }
     </style>
@@ -220,213 +316,296 @@
                 </div>
 
                 <ul class="side-nav">
-                    <span class="side-nav__header"><i class="fas fa-bookmark"></i> Menü</span>
-                    <li id="dashboardItem" class="side-nav__item">
-                        <span><i class="fas fa-home"></i> Dashboard</span>
+                    <li class="side-nav__item" onclick="window.location.href='dashboard.html'">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
                     </li>
-                    <li id="consoleItem" class="side-nav__item">
-                        <span><i class="fas fa-terminal"></i> Konsole</span>
+                    <li class="side-nav__item" onclick="window.location.href='console.html'">
+                        <i class="fas fa-terminal"></i>
+                        <span>Konsole</span>
                     </li>
-                    <li id="moduleItem" class="side-nav__item side-nav__item-active">
-                        <span><i class="fas fa-boxes"></i> Verkauf/Ankauf</span>
+                    <li class="side-nav__item side-nav__item-active">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Verkauf/Ankauf</span>
                     </li>
-                    <li id="statisticItem" class="side-nav__item">
-                        <span><i class="fas fa-chart-bar"></i> Statistik</span>
+                    <li class="side-nav__item" onclick="window.location.href='statistic.html'">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Statistik</span>
                     </li>
-                    <li id="settingsItem" class="side-nav__item">
-                        <span><i class="fas fa-cogs"></i> Einstellungen</span>
+                    <li class="side-nav__item" onclick="window.location.href='einstellungen.html'">
+                        <i class="fas fa-cog"></i>
+                        <span>Einstellungen</span>
                     </li>
                 </ul>
             </div>
+
+            <ul class="side-nav">
+                <li class="side-nav__item last-item">
+                    <a onclick="deleteAllCookies()"><i class="fas fa-sign-out-alt"></i> Ausloggen</a>
+                </li>
+            </ul>
         </nav>
 
         <div class="main-content">
             <header class="header">
-                <h1>Verkauf/Ankauf</h1>
+                <h1><i class="fas fa-exchange-alt"></i> Verkauf/Ankauf</h1>
             </header>
-            
-            <div class="box">
-                <div class="table-actions">
-                    <input id="search" class="input" placeholder="Suchen">
-                    <button class="button button-main" id="create-button"><i class="fas fa-plus"></i> Erstellen</button>
-                    <button class="button button-main" onclick="scan()"><i class="fas fa-search"></i> Verkauf scannen</button>
-                    <button class="button button-main" onclick="scanAnkauf()"><i class="fas fa-search"></i> Ankauf scannen</button>
+
+            <div class="table-actions">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="search-input" placeholder="Artikel suchen...">
                 </div>
-                
-                <table id="table" class="table" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <th><i class="fas fa-sort-alpha-down"></i> Anzeigename</th>
-                        <th><i class="fas fa-sort-alpha-down"></i> ID</th>
-                        <th><i class="fas fa-sort-numeric-down"></i> Vorhandene Anzahl</th>
-                        <th>VK / AK</th>
-                    </tr>
-                    <tr>
-                        <td>Eichenholz</td>
-                        <td>oak_log</td>
-                        <td>128</td>
-                        <td>10$ / 8$</td>
-                    </tr>
-                    <tr>
-                        <td>Stein</td>
-                        <td>stone</td>
-                        <td>256</td>
-                        <td>5$ / 4$</td>
-                    </tr>
-                    <tr>
-                        <td>Eisenbarren</td>
-                        <td>iron_ingot</td>
-                        <td>64</td>
-                        <td>20$ / 15$</td>
-                    </tr>
+                <div>
+                    <button class="btn btn-primary" onclick="openEditModal(null, true)">
+                        <i class="fas fa-plus"></i> Neuer Artikel
+                    </button>
+                    <button class="btn btn-secondary" onclick="scanChests()">
+                        <i class="fas fa-sync-alt"></i> Kisten scannen
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Artikel</th>
+                            <th>Material</th>
+                            <th>Bestand</th>
+                            <th>VK-Preis</th>
+                            <th>AK-Preis</th>
+                            <th>Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="items-table">
+                        <!-- Beispiel-Daten -->
+                        <tr>
+                            <td>Eichenholz</td>
+                            <td>oak_log</td>
+                            <td>128</td>
+                            <td>10 €</td>
+                            <td>8 €</td>
+                            <td>
+                                <button class="action-btn" onclick="openEditModal(0)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn" onclick="deleteItem(0)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Stein</td>
+                            <td>stone</td>
+                            <td>256</td>
+                            <td>5 €</td>
+                            <td>4 €</td>
+                            <td>
+                                <button class="action-btn" onclick="openEditModal(1)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn" onclick="deleteItem(1)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Eisenbarren</td>
+                            <td>iron_ingot</td>
+                            <td>64</td>
+                            <td>20 €</td>
+                            <td>15 €</td>
+                            <td>
+                                <button class="action-btn" onclick="openEditModal(2)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn" onclick="deleteItem(2)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+
+    <!-- Bearbeitungs-Modal -->
+    <div class="modal" id="edit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Artikel bearbeiten</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
             
-            <div class="box">
-                <h3><i class="fas fa-user"></i> Kopf Ankauf</h3>
-                
-                <div class="input-container">
-                    <label>Preis pro Kopf:</label>
-                    <input type="number" id="priceInputhead" class="input" value="10">
-                </div>
-                
-                <div id="nameInputsContainer">
-                    <div class="input-container">
-                        <input type="text" placeholder="Name" class="input name-input" value="Spieler1">
-                        <input type="number" placeholder="1" class="input amount-input" value="1" style="width: 80px;">
-                    </div>
-                </div>
-                
-                <div style="margin-top: 15px;">
-                    <button class="button button-main" onclick="addNameAndAmountFields()"><i class="fas fa-plus"></i> Hinzufügen</button>
-                    <button class="button button-main" onclick="saveData()"><i class="fas fa-save"></i> Speichern</button>
-                </div>
+            <div class="form-group">
+                <label for="item-name">Artikelname</label>
+                <input type="text" id="item-name" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="item-material">Material</label>
+                <input type="text" id="item-material" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="item-stock">Bestand</label>
+                <input type="number" id="item-stock" class="form-control" min="0">
+            </div>
+            
+            <div class="form-group">
+                <label for="item-sell-price">Verkaufspreis (€)</label>
+                <input type="number" id="item-sell-price" class="form-control" min="0" step="0.1">
+            </div>
+            
+            <div class="form-group">
+                <label for="item-buy-price">Ankaufspreis (€)</label>
+                <input type="number" id="item-buy-price" class="form-control" min="0" step="0.1">
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Abbrechen</button>
+                <button class="btn btn-primary" id="save-item-btn">Speichern</button>
             </div>
         </div>
     </div>
 
     <script>
+        // Beispiel-Daten
+        const items = [
+            { name: "Eichenholz", material: "oak_log", stock: 128, sellPrice: 10, buyPrice: 8 },
+            { name: "Stein", material: "stone", stock: 256, sellPrice: 5, buyPrice: 4 },
+            { name: "Eisenbarren", material: "iron_ingot", stock: 64, sellPrice: 20, buyPrice: 15 }
+        ];
+        
+        // Modal-Funktionen
+        let currentEditIndex = null;
+        const modal = document.getElementById('edit-modal');
+        
+        function openEditModal(index, isNew = false) {
+            currentEditIndex = index;
+            const modalTitle = document.getElementById('modal-title');
+            const saveBtn = document.getElementById('save-item-btn');
+            
+            if (isNew) {
+                modalTitle.textContent = "Neuer Artikel";
+                saveBtn.textContent = "Hinzufügen";
+                
+                // Felder leeren
+                document.getElementById('item-name').value = "";
+                document.getElementById('item-material').value = "";
+                document.getElementById('item-stock').value = "";
+                document.getElementById('item-sell-price').value = "";
+                document.getElementById('item-buy-price').value = "";
+            } else {
+                modalTitle.textContent = "Artikel bearbeiten";
+                saveBtn.textContent = "Speichern";
+                
+                // Felder mit Daten füllen
+                const item = items[index];
+                document.getElementById('item-name').value = item.name;
+                document.getElementById('item-material').value = item.material;
+                document.getElementById('item-stock').value = item.stock;
+                document.getElementById('item-sell-price').value = item.sellPrice;
+                document.getElementById('item-buy-price').value = item.buyPrice;
+            }
+            
+            modal.style.display = "flex";
+        }
+        
+        function closeModal() {
+            modal.style.display = "none";
+        }
+        
+        function saveItem() {
+            const name = document.getElementById('item-name').value;
+            const material = document.getElementById('item-material').value;
+            const stock = parseInt(document.getElementById('item-stock').value);
+            const sellPrice = parseFloat(document.getElementById('item-sell-price').value);
+            const buyPrice = parseFloat(document.getElementById('item-buy-price').value);
+            
+            if (!name || !material || isNaN(stock) || isNaN(sellPrice) || isNaN(buyPrice)) {
+                Swal.fire('Fehler', 'Bitte füllen Sie alle Felder aus!', 'error');
+                return;
+            }
+            
+            const newItem = { name, material, stock, sellPrice, buyPrice };
+            
+            if (currentEditIndex === null) {
+                // Neuer Artikel
+                items.push(newItem);
+                Swal.fire('Erfolg', 'Artikel wurde hinzugefügt!', 'success');
+            } else {
+                // Bestehender Artikel
+                items[currentEditIndex] = newItem;
+                Swal.fire('Erfolg', 'Artikel wurde aktualisiert!', 'success');
+            }
+            
+            // Tabelle aktualisieren
+            renderItemsTable();
+            closeModal();
+        }
+        
+        function deleteItem(index) {
+            Swal.fire({
+                title: 'Artikel löschen?',
+                text: 'Möchten Sie diesen Artikel wirklich löschen?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ja, löschen',
+                cancelButtonText: 'Abbrechen'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    items.splice(index, 1);
+                    renderItemsTable();
+                    Swal.fire('Gelöscht!', 'Der Artikel wurde entfernt.', 'success');
+                }
+            });
+        }
+        
+        function renderItemsTable() {
+            const tbody = document.getElementById('items-table');
+            tbody.innerHTML = '';
+            
+            items.forEach((item, index) => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.material}</td>
+                    <td>${item.stock}</td>
+                    <td>${item.sellPrice} €</td>
+                    <td>${item.buyPrice} €</td>
+                    <td>
+                        <button class="action-btn" onclick="openEditModal(${index})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn" onclick="deleteItem(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+        
+        function scanChests() {
+            Swal.fire({
+                title: 'Kisten scannen',
+                text: 'Der Bot scannt nun alle Verkaufs- und Ankaufskisten...',
+                icon: 'info',
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                Swal.fire('Scan abgeschlossen', 'Alle Kisten wurden erfolgreich gescannt!', 'success');
+            });
+        }
+        
         // Navigation
         document.querySelectorAll('.side-nav__item').forEach(item => {
             item.addEventListener('click', function() {
-                document.querySelectorAll('.side-nav__item').forEach(i => {
-                    i.classList.remove('side-nav__item-active');
-                });
-                this.classList.add('side-nav__item-active');
-                
-                // Hier würde normalerweise die Seite gewechselt werden
-                console.log(`Navigiere zu: ${this.textContent.trim()}`);
-            });
-        });
-
-        // Funktionen für die Kopf-Ankauf-Liste
-        function addNameAndAmountFields(predefinedValue = "", amount = 1) {
-            const container = document.getElementById('nameInputsContainer');
-            const inputContainer = document.createElement('div');
-            inputContainer.classList.add('input-container');
-
-            const nameInput = document.createElement('input');
-            nameInput.type = 'text';
-            nameInput.placeholder = 'Name';
-            nameInput.classList.add('input', 'name-input');
-            nameInput.value = predefinedValue;
-            inputContainer.appendChild(nameInput);
-
-            const amountInput = document.createElement('input');
-            amountInput.type = 'number';
-            amountInput.placeholder = '1';
-            amountInput.classList.add('input', 'amount-input');
-            amountInput.style.width = '80px';
-            amountInput.value = amount;
-            inputContainer.appendChild(amountInput);
-
-            container.appendChild(inputContainer);
-        }
-
-        function saveData() {
-            const inputContainers = document.querySelectorAll('.input-container');
-            const players = [];
-            
-            inputContainers.forEach(container => {
-                const nameInput = container.querySelector('.name-input');
-                const amountInput = container.querySelector('.amount-input');
-                
-                if (nameInput && nameInput.value) {
-                    const count = parseInt(amountInput.value) || 1;
-                    for (let i = 0; i < count; i++) {
-                        players.push(nameInput.value);
-                    }
-                }
-            });
-            
-            const price = document.getElementById('priceInputhead').value;
-            
-            Swal.fire({
-                title: 'Einstellungen gespeichert',
-                html: `Es werden <b>${players.length} Köpfe</b> zum Preis von <b>${price}$</b> pro Kopf angekauft.<br><br>
-                      <small>${players.slice(0, 5).join(', ')}${players.length > 5 ? '...' : ''}</small>`,
-                icon: 'success'
-            });
-            
-            // Hier würde normalerweise die Daten an den Server gesendet werden
-            console.log({
-                players: players,
-                pricePerHead: price
-            });
-        }
-
-        // Scan-Funktionen
-        function scan() {
-            Swal.fire({
-                title: "Verkaufskisten scannen",
-                text: "Der Bot wird nun alle Verkaufskisten scannen...",
-                icon: "info",
-                timer: 2000,
-                showConfirmButton: false
-            });
-            
-            // Hier würde normalerweise eine Anfrage an den Server gesendet werden
-            setTimeout(() => {
-                Swal.fire({
-                    title: "Scan abgeschlossen",
-                    text: "Alle Verkaufskisten wurden erfolgreich gescannt!",
-                    icon: "success"
-                });
-            }, 2000);
-        }
-
-        function scanAnkauf() {
-            Swal.fire({
-                title: "Ankaufskiste scannen",
-                input: "text",
-                inputPlaceholder: "X,Y,Z",
-                inputValue: "123,64,456",
-                showCancelButton: true,
-                confirmButtonText: "Scannen starten",
-                inputValidator: (value) => {
-                    if (!value) return 'Bitte Koordinaten eingeben';
-                    if (!value.match(/^-?\d+,-?\d+,-?\d+$/)) return 'Ungültiges Format (X,Y,Z)';
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: "Scan läuft...",
-                        text: `Scanne Kiste bei ${result.value}`,
-                        icon: "info",
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                    
-                    // Hier würde normalerweise eine Anfrage an den Server gesendet werden
-                    setTimeout(() => {
-                        Swal.fire({
-                            title: "Scan abgeschlossen",
-                            text: `Kiste bei ${result.value} wurde erfolgreich gescannt!`,
-                            icon: "success"
-                        });
-                    }, 2000);
-                }
-            });
-        }
-    </script>
-</body>
-</html>
+                if (!this.classList.contains('side-nav__item-active')) {
+                    document.querySelectorAll('.side-nav__item').forEach(i => {
+                        i.classList.re
