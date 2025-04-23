@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NewWolfbot – Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 240px;
+      background-color: #1e1e1e;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      margin-bottom: 40px;
+      color: #ffffff;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: #aaa;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+
+    .sidebar a.active,
+    .sidebar a:hover {
+      color: #fff;
+    }
+
+    .content {
+      flex: 1;
+      padding: 40px;
+    }
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 20px;
+      background-color: #2196f3;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #1976d2;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 15px 10px;
+      }
+
+      .sidebar h1 {
+        display: none;
+      }
+
+      .sidebar a {
+        margin: 0 10px;
+      }
+
+      .content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h1>NewWolfbot</h1>
+    <a href="index.html" class="active">Home</a>
+    <a href="dashboard.html">Dashboard</a>
+  </div>
+  <div class="content">
+    <h2>Willkommen beim NewWolfbot!</h2>
+    <p>Dies ist dein smarter Minecraft-Verwaltungsassistent. Steuere deinen Bot direkt über das Dashboard und behalte jederzeit den Überblick.</p>
+    <a class="btn" href="dashboard.html">Zum Dashboard</a>
+  </div>
+</body>
+</html>
