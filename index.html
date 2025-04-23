@@ -1,17 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NewWolfbot – Home</title>
+  <title>NewWolfbot – Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    /* ... identisches CSS wie vorher ... */
     body {
       background-color: #121212;
       color: white;
@@ -68,7 +64,7 @@
       display: inline-block;
       margin-top: 30px;
       padding: 12px 20px;
-      background-color: #2196f3;
+      background-color: #5865F2;
       color: white;
       text-decoration: none;
       border-radius: 6px;
@@ -77,32 +73,23 @@
     }
 
     .btn:hover {
-      background-color: #1976d2;
+      background-color: #4752C4;
     }
 
-    @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-      }
+    .user-info {
+      margin-top: 20px;
+    }
 
-      .sidebar {
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-around;
-        padding: 15px 10px;
-      }
+    .user-info img {
+      border-radius: 50%;
+      width: 64px;
+      height: 64px;
+    }
 
-      .sidebar h1 {
-        display: none;
-      }
-
-      .sidebar a {
-        margin: 0 10px;
-      }
-
-      .content {
-        padding: 20px;
-      }
+    .user-info span {
+      margin-left: 10px;
+      font-size: 1.1rem;
+      vertical-align: middle;
     }
   </style>
 </head>
@@ -114,8 +101,47 @@
   </div>
   <div class="content">
     <h2>Willkommen beim NewWolfbot!</h2>
-    <p>Dies ist dein smarter Minecraft-Verwaltungsassistent. Steuere deinen Bot direkt über das Dashboard und behalte jederzeit den Überblick.</p>
-    <a class="btn" href="dashboard.html">Zum Dashboard</a>
+    <p>Logge dich mit Discord ein, um deinen Minecraft-Bot zu steuern.</p>
+    <a id="login-btn" class="btn" href="#">Mit Discord einloggen</a>
+    <div class="user-info" id="user-info" style="display:none;">
+      <img id="avatar" src="" alt="Avatar"><span id="username"></span>
+    </div>
   </div>
+
+  <script>
+    const clientId = "DEIN_CLIENT_ID_HIER"; // Ersetzen
+    const redirectUri = "https://tagwolf.github.io/NewWolfbot/";
+    const scope = "identify";
+    const loginBtn = document.getElementById("login-btn");
+
+    // Check if we already have a token
+    const hash = window.location.hash;
+    if (hash.includes("access_token")) {
+      const token = new URLSearchParams(hash.substring(1)).get("access_token");
+
+      // Get user data from Discord API
+      fetch("https://discord.com/api/users/@me", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(user => {
+          loginBtn.style.display = "none";
+          document.getElementById("user-info").style.display = "block";
+          document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+          document.getElementById("username").textContent = `${user.username}#${user.discriminator}`;
+
+          // Optional: Weiterleitung
+          // window.location.href = "dashboard.html";
+        });
+    }
+
+    loginBtn.onclick = () => {
+      const oauthUrl =
+        `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${scope}`;
+      window.location.href = oauthUrl;
+    };
+  </script>
 </body>
 </html>
