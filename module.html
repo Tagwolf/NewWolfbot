@@ -33,6 +33,9 @@
             background-color: var(--dark-color);
             color: white;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .sidebar__logo {
@@ -111,6 +114,35 @@
         .header h1 i {
             margin-right: 10px;
             color: var(--primary-color);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            margin-right: 5px;
+            background-color: #f1f1f1;
+        }
+
+        .tab:hover {
+            background-color: #ddd;
+        }
+
+        .tab-active {
+            background-color: white;
+            border-color: #ddd;
+            border-bottom-color: white;
+            color: var(--primary-color);
+            font-weight: bold;
         }
 
         /* Table Actions */
@@ -215,6 +247,59 @@
             margin: 0 5px;
         }
 
+        /* Player Heads Section */
+        .heads-container {
+            display: none;
+        }
+
+        .heads-form {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .input-row input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .input-row .amount-input {
+            width: 80px;
+        }
+
+        .add-head-btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .add-head-btn i {
+            margin-right: 8px;
+        }
+
+        .heads-list {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
         /* Modal */
         .modal {
             display: none;
@@ -303,6 +388,15 @@
             .search-input {
                 width: 100%;
             }
+            
+            .input-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .input-row .amount-input {
+                width: auto;
+            }
         }
     </style>
 </head>
@@ -340,8 +434,9 @@
             </div>
 
             <ul class="side-nav">
-                <li class="side-nav__item last-item">
-                    <a onclick="deleteAllCookies()"><i class="fas fa-sign-out-alt"></i> Ausloggen</a>
+                <li class="side-nav__item last-item" onclick="deleteAllCookies()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Ausloggen</span>
                 </li>
             </ul>
         </nav>
@@ -351,82 +446,174 @@
                 <h1><i class="fas fa-exchange-alt"></i> Verkauf/Ankauf</h1>
             </header>
 
-            <div class="table-actions">
-                <div class="search-container">
-                    <i class="fas fa-search"></i>
-                    <input type="text" class="search-input" placeholder="Artikel suchen...">
+            <!-- Tabs Navigation -->
+            <div class="tabs">
+                <div class="tab tab-active" onclick="switchTab('items')">
+                    <i class="fas fa-box-open"></i> Items
                 </div>
-                <div>
-                    <button class="btn btn-primary" onclick="openEditModal(null, true)">
-                        <i class="fas fa-plus"></i> Neuer Artikel
-                    </button>
-                    <button class="btn btn-secondary" onclick="scanChests()">
-                        <i class="fas fa-sync-alt"></i> Kisten scannen
-                    </button>
+                <div class="tab" onclick="switchTab('heads')">
+                    <i class="fas fa-skull"></i> Player Heads
                 </div>
             </div>
 
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Artikel</th>
-                            <th>Material</th>
-                            <th>Bestand</th>
-                            <th>VK-Preis</th>
-                            <th>AK-Preis</th>
-                            <th>Aktionen</th>
-                        </tr>
-                    </thead>
-                    <tbody id="items-table">
-                        <!-- Beispiel-Daten -->
-                        <tr>
-                            <td>Eichenholz</td>
-                            <td>oak_log</td>
-                            <td>128</td>
-                            <td>10 €</td>
-                            <td>8 €</td>
-                            <td>
-                                <button class="action-btn" onclick="openEditModal(0)">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn" onclick="deleteItem(0)">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Stein</td>
-                            <td>stone</td>
-                            <td>256</td>
-                            <td>5 €</td>
-                            <td>4 €</td>
-                            <td>
-                                <button class="action-btn" onclick="openEditModal(1)">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn" onclick="deleteItem(1)">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Eisenbarren</td>
-                            <td>iron_ingot</td>
-                            <td>64</td>
-                            <td>20 €</td>
-                            <td>15 €</td>
-                            <td>
-                                <button class="action-btn" onclick="openEditModal(2)">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn" onclick="deleteItem(2)">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- Items Tab Content -->
+            <div id="items-tab">
+                <div class="table-actions">
+                    <div class="search-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="search-input" placeholder="Artikel suchen...">
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" onclick="openEditModal(null, true)">
+                            <i class="fas fa-plus"></i> Neuer Artikel
+                        </button>
+                        <button class="btn btn-secondary" onclick="scanChests()">
+                            <i class="fas fa-sync-alt"></i> Kisten scannen
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Artikel</th>
+                                <th>Material</th>
+                                <th>Bestand</th>
+                                <th>VK-Preis</th>
+                                <th>AK-Preis</th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
+                        <tbody id="items-table">
+                            <!-- Beispiel-Daten -->
+                            <tr>
+                                <td>Eichenholz</td>
+                                <td>oak_log</td>
+                                <td>128</td>
+                                <td>10.00 €</td>
+                                <td>8.00 €</td>
+                                <td>
+                                    <button class="action-btn" onclick="openEditModal(0)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="deleteItem(0)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Stein</td>
+                                <td>stone</td>
+                                <td>256</td>
+                                <td>5.00 €</td>
+                                <td>4.00 €</td>
+                                <td>
+                                    <button class="action-btn" onclick="openEditModal(1)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="deleteItem(1)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Eisenbarren</td>
+                                <td>iron_ingot</td>
+                                <td>64</td>
+                                <td>20.00 €</td>
+                                <td>15.00 €</td>
+                                <td>
+                                    <button class="action-btn" onclick="openEditModal(2)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="deleteItem(2)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Player Heads Tab Content -->
+            <div id="heads-tab" class="heads-container">
+                <div class="heads-form">
+                    <div class="input-row">
+                        <input type="text" id="player-name" class="form-control" placeholder="Spielername">
+                        <input type="number" id="head-amount" class="form-control amount-input" placeholder="1" min="1" value="1">
+                        <button class="add-head-btn" onclick="addHead()">
+                            <i class="fas fa-plus"></i> Hinzufügen
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label for="head-price">Preis pro Kopf (€)</label>
+                        <input type="number" id="head-price" class="form-control" min="0" step="0.1" value="5.00">
+                    </div>
+                </div>
+
+                <div class="heads-list">
+                    <div class="table-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" class="search-input" placeholder="Spieler suchen...">
+                        </div>
+                        <div>
+                            <button class="btn btn-secondary" onclick="scanHeads()">
+                                <i class="fas fa-sync-alt"></i> Heads scannen
+                            </button>
+                            <button class="btn btn-primary" onclick="saveHeads()">
+                                <i class="fas fa-save"></i> Speichern
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Spielername</th>
+                                    <th>Anzahl</th>
+                                    <th>Preis pro Kopf</th>
+                                    <th>Gesamtpreis</th>
+                                    <th>Aktionen</th>
+                                </tr>
+                            </thead>
+                            <tbody id="heads-table">
+                                <!-- Beispiel-Daten -->
+                                <tr>
+                                    <td>Notch</td>
+                                    <td>3</td>
+                                    <td>5.00 €</td>
+                                    <td>15.00 €</td>
+                                    <td>
+                                        <button class="action-btn" onclick="editHead(0)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" onclick="removeHead(0)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Herobrine</td>
+                                    <td>1</td>
+                                    <td>10.00 €</td>
+                                    <td>10.00 €</td>
+                                    <td>
+                                        <button class="action-btn" onclick="editHead(1)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" onclick="removeHead(1)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -471,6 +658,36 @@
         </div>
     </div>
 
+    <!-- Head Bearbeitungs-Modal -->
+    <div class="modal" id="edit-head-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-head-title">Head bearbeiten</h2>
+                <button class="close-btn" onclick="closeHeadModal()">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="edit-player-name">Spielername</label>
+                <input type="text" id="edit-player-name" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="edit-head-amount">Anzahl</label>
+                <input type="number" id="edit-head-amount" class="form-control" min="1">
+            </div>
+            
+            <div class="form-group">
+                <label for="edit-head-price">Preis pro Kopf (€)</label>
+                <input type="number" id="edit-head-price" class="form-control" min="0" step="0.1">
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeHeadModal()">Abbrechen</button>
+                <button class="btn btn-primary" id="save-head-btn">Speichern</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Beispiel-Daten
         const items = [
@@ -478,10 +695,32 @@
             { name: "Stein", material: "stone", stock: 256, sellPrice: 5, buyPrice: 4 },
             { name: "Eisenbarren", material: "iron_ingot", stock: 64, sellPrice: 20, buyPrice: 15 }
         ];
-        
+
+        const heads = [
+            { playerName: "Notch", amount: 3, price: 5 },
+            { playerName: "Herobrine", amount: 1, price: 10 }
+        ];
+
+        // Aktiver Tab
+        let activeTab = 'items';
+
         // Modal-Funktionen
         let currentEditIndex = null;
+        let currentHeadEditIndex = null;
         const modal = document.getElementById('edit-modal');
+        const headModal = document.getElementById('edit-head-modal');
+        
+        function switchTab(tabName) {
+            activeTab = tabName;
+            document.getElementById('items-tab').style.display = tabName === 'items' ? 'block' : 'none';
+            document.getElementById('heads-tab').style.display = tabName === 'heads' ? 'block' : 'none';
+            
+            // Tabs aktivieren/deaktivieren
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('tab-active');
+            });
+            document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('tab-active');
+        }
         
         function openEditModal(index, isNew = false) {
             currentEditIndex = index;
@@ -575,8 +814,8 @@
                     <td>${item.name}</td>
                     <td>${item.material}</td>
                     <td>${item.stock}</td>
-                    <td>${item.sellPrice} €</td>
-                    <td>${item.buyPrice} €</td>
+                    <td>${item.sellPrice.toFixed(2)} €</td>
+                    <td>${item.buyPrice.toFixed(2)} €</td>
                     <td>
                         <button class="action-btn" onclick="openEditModal(${index})">
                             <i class="fas fa-edit"></i>
@@ -602,6 +841,142 @@
                 Swal.fire('Scan abgeschlossen', 'Alle Kisten wurden erfolgreich gescannt!', 'success');
             });
         }
+
+        // Player Heads Funktionen
+        function addHead() {
+            const playerName = document.getElementById('player-name').value.trim();
+            const amount = parseInt(document.getElementById('head-amount').value) || 1;
+            
+            if (!playerName) {
+                Swal.fire('Fehler', 'Bitte geben Sie einen Spielernamen ein!', 'error');
+                return;
+            }
+            
+            const price = parseFloat(document.getElementById('head-price').value) || 0;
+            
+            // Überprüfen ob der Spieler bereits existiert
+            const existingIndex = heads.findIndex(h => h.playerName.toLowerCase() === playerName.toLowerCase());
+            
+            if (existingIndex >= 0) {
+                // Bestehenden Eintrag aktualisieren
+                heads[existingIndex].amount += amount;
+                heads[existingIndex].price = price;
+                Swal.fire('Aktualisiert', `Anzahl für ${playerName} wurde erhöht!`, 'success');
+            } else {
+                // Neuen Eintrag hinzufügen
+                heads.push({ playerName, amount, price });
+                Swal.fire('Hinzugefügt', `${playerName} wurde zur Liste hinzugefügt!`, 'success');
+            }
+            
+            // Felder zurücksetzen
+            document.getElementById('player-name').value = '';
+            document.getElementById('head-amount').value = '1';
+            
+            renderHeadsTable();
+        }
+        
+        function editHead(index) {
+            currentHeadEditIndex = index;
+            const head = heads[index];
+            
+            document.getElementById('edit-player-name').value = head.playerName;
+            document.getElementById('edit-head-amount').value = head.amount;
+            document.getElementById('edit-head-price').value = head.price;
+            
+            headModal.style.display = "flex";
+        }
+        
+        function closeHeadModal() {
+            headModal.style.display = "none";
+        }
+        
+        function saveHead() {
+            const playerName = document.getElementById('edit-player-name').value.trim();
+            const amount = parseInt(document.getElementById('edit-head-amount').value);
+            const price = parseFloat(document.getElementById('edit-head-price').value);
+            
+            if (!playerName || isNaN(amount) || isNaN(price)) {
+                Swal.fire('Fehler', 'Bitte füllen Sie alle Felder aus!', 'error');
+                return;
+            }
+            
+            heads[currentHeadEditIndex] = { playerName, amount, price };
+            renderHeadsTable();
+            closeHeadModal();
+            Swal.fire('Erfolg', 'Head wurde aktualisiert!', 'success');
+        }
+        
+        function removeHead(index) {
+            Swal.fire({
+                title: 'Head löschen?',
+                text: 'Möchten Sie diesen Head wirklich löschen?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ja, löschen',
+                cancelButtonText: 'Abbrechen'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    heads.splice(index, 1);
+                    renderHeadsTable();
+                    Swal.fire('Gelöscht!', 'Der Head wurde entfernt.', 'success');
+                }
+            });
+        }
+        
+        function renderHeadsTable() {
+            const tbody = document.getElementById('heads-table');
+            tbody.innerHTML = '';
+            
+            heads.forEach((head, index) => {
+                const row = document.createElement('tr');
+                const totalPrice = (head.amount * head.price).toFixed(2);
+                
+                row.innerHTML = `
+                    <td>${head.playerName}</td>
+                    <td>${head.amount}</td>
+                    <td>${head.price.toFixed(2)} €</td>
+                    <td>${totalPrice} €</td>
+                    <td>
+                        <button class="action-btn" onclick="editHead(${index})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn" onclick="removeHead(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+        
+        function scanHeads() {
+            Swal.fire({
+                title: 'Heads scannen',
+                text: 'Der Bot scannt nun alle Player Heads...',
+                icon: 'info',
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                Swal.fire('Scan abgeschlossen', 'Alle Player Heads wurden erfolgreich gescannt!', 'success');
+            });
+        }
+        
+        function saveHeads() {
+            const price = parseFloat(document.getElementById('head-price').value) || 0;
+            
+            Swal.fire({
+                title: 'Einstellungen gespeichert',
+                html: `Es werden <b>${heads.length} verschiedene Heads</b> zum Preis von <b>${price.toFixed(2)}€</b> pro Kopf angekauft.`,
+                icon: 'success'
+            });
+            
+            // Hier würde normalerweise die Daten an den Server gesendet werden
+            console.log({
+                heads: heads,
+                pricePerHead: price
+            });
+        }
         
         // Navigation
         document.querySelectorAll('.side-nav__item').forEach(item => {
@@ -617,10 +992,13 @@
         
         // Event Listener
         document.getElementById('save-item-btn').addEventListener('click', saveItem);
+        document.getElementById('save-head-btn').addEventListener('click', saveHead);
         
         // Initialisierung
         document.addEventListener('DOMContentLoaded', () => {
             renderItemsTable();
+            renderHeadsTable();
+            switchTab('items');
         });
         
         // Cookie functions
@@ -630,113 +1008,6 @@
                     "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
             });
             window.location.href = "login.html";
-       function addNameAndAmountFields(predefinedValue = "", amount = 1) {
-            const container = document.getElementById('nameInputsContainer');
-            const inputContainer = document.createElement('div');
-            inputContainer.classList.add('input-container');
-
-            const nameInput = document.createElement('input');
-            nameInput.type = 'text';
-            nameInput.placeholder = 'Name';
-            nameInput.classList.add('input', 'name-input');
-            nameInput.value = predefinedValue;
-            inputContainer.appendChild(nameInput);
-
-            const amountInput = document.createElement('input');
-            amountInput.type = 'number';
-            amountInput.placeholder = '1';
-            amountInput.classList.add('input', 'amount-input');
-            amountInput.style.width = '80px';
-            amountInput.value = amount;
-            inputContainer.appendChild(amountInput);
-
-            container.appendChild(inputContainer);
-        }
-
-        function saveData() {
-            const inputContainers = document.querySelectorAll('.input-container');
-            const players = [];
-            
-            inputContainers.forEach(container => {
-                const nameInput = container.querySelector('.name-input');
-                const amountInput = container.querySelector('.amount-input');
-                
-                if (nameInput && nameInput.value) {
-                    const count = parseInt(amountInput.value) || 1;
-                    for (let i = 0; i < count; i++) {
-                        players.push(nameInput.value);
-                    }
-                }
-            });
-            
-            const price = document.getElementById('priceInputhead').value;
-            
-            Swal.fire({
-                title: 'Einstellungen gespeichert',
-                html: `Es werden <b>${players.length} Köpfe</b> zum Preis von <b>${price}$</b> pro Kopf angekauft.<br><br>
-                      <small>${players.slice(0, 5).join(', ')}${players.length > 5 ? '...' : ''}</small>`,
-                icon: 'success'
-            });
-            
-            // Hier würde normalerweise die Daten an den Server gesendet werden
-            console.log({
-                players: players,
-                pricePerHead: price
-            });
-        }
-
-        // Scan-Funktionen
-        function scan() {
-            Swal.fire({
-                title: "Verkaufskisten scannen",
-                text: "Der Bot wird nun alle Verkaufskisten scannen...",
-                icon: "info",
-                timer: 2000,
-                showConfirmButton: false
-            });
-            
-            // Hier würde normalerweise eine Anfrage an den Server gesendet werden
-            setTimeout(() => {
-                Swal.fire({
-                    title: "Scan abgeschlossen",
-                    text: "Alle Verkaufskisten wurden erfolgreich gescannt!",
-                    icon: "success"
-                });
-            }, 2000);
-        }
-
-        function scanAnkauf() {
-            Swal.fire({
-                title: "Ankaufskiste scannen",
-                input: "text",
-                inputPlaceholder: "X,Y,Z",
-                inputValue: "123,64,456",
-                showCancelButton: true,
-                confirmButtonText: "Scannen starten",
-                inputValidator: (value) => {
-                    if (!value) return 'Bitte Koordinaten eingeben';
-                    if (!value.match(/^-?\d+,-?\d+,-?\d+$/)) return 'Ungültiges Format (X,Y,Z)';
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: "Scan läuft...",
-                        text: `Scanne Kiste bei ${result.value}`,
-                        icon: "info",
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                    
-                    // Hier würde normalerweise eine Anfrage an den Server gesendet werden
-                    setTimeout(() => {
-                        Swal.fire({
-                            title: "Scan abgeschlossen",
-                            text: `Kiste bei ${result.value} wurde erfolgreich gescannt!`,
-                            icon: "success"
-                        });
-                    }, 2000);
-                }
-            });
         }
     </script>
 </body>
