@@ -13,6 +13,7 @@
   <link rel="shortcut icon" href="logo.png" type="image/x-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <style>
     body {
@@ -64,10 +65,20 @@
       text-decoration: none;
       font-weight: 600;
       transition: background-color 0.3s ease;
+      margin: 0.5rem;
+      width: 80%;
     }
 
     .link:hover {
       background-color: #4752c4;
+    }
+
+    .link.minecraft {
+      background-color: #62b74a;
+    }
+
+    .link.minecraft:hover {
+      background-color: #4e9a3a;
     }
 
     .symbol {
@@ -112,6 +123,35 @@
     .icon-contrast {
       font-size: 1.5rem;
     }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .form-input {
+      width: 80%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .form-input::placeholder {
+      color: #ccc;
+    }
+
+    .login-options {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+      gap: 1rem;
+    }
   </style>
 
   <script>
@@ -120,6 +160,19 @@
         alert("Bitte nutze WolfBot über https://tagwolf.github.io/NewWolfbot/");
         window.location.href = "https://tagwolf.github.io/NewWolfbot/";
       }
+
+      // Minecraft Login Funktion
+      document.getElementById('minecraftLoginBtn').addEventListener('click', function() {
+        const username = document.getElementById('mcUsername').value.trim();
+        if (!username) {
+          alert('Bitte gib deinen Minecraft-Namen ein!');
+          return;
+        }
+        sessionStorage.setItem('wolfbot-username', username);
+        window.location.href = 'dashboard.html';
+      });
+
+      // Discord Login bleibt wie vorhanden
     });
   </script>
 </head>
@@ -127,12 +180,30 @@
 <body>
   <div class="login">
     <div class="card animate__animated animate__fadeInUp">
-      <div class="symbol icon-users">👥</div>
-      <h1 class="title">Einloggen</h1>
-      <p class="description">Schnell einloggen mit einem deiner sozialen Konten</p>
+      <div class="symbol"><i class="fas fa-user-shield"></i></div>
+      <h1 class="title">WolfBot Login</h1>
+      <p class="description">Wähle deine Login-Methode</p>
+
+      <div class="login-options">
+        <div style="width: 100%;">
+          <h3 style="margin-bottom: 1rem;">Minecraft Login</h3>
+          <div class="login-form">
+            <input type="text" id="mcUsername" class="form-input" placeholder="Minecraft Benutzername">
+            <button id="minecraftLoginBtn" class="link minecraft">
+              <i class="fas fa-sign-in-alt"></i> Mit Minecraft anmelden
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin: 1.5rem 0; text-align: center; position: relative;">
+        <div style="height: 1px; background: rgba(255,255,255,0.2); width: 100%;"></div>
+        <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #1e1e2f, #2a2a40); padding: 0 1rem;">ODER</span>
+      </div>
+
       <a class="link btn-slow-transition"
         href="https://discord.com/oauth2/authorize?client_id=1312429365363081257&response_type=code&redirect_uri=https%3A%2F%2Ftagwolf.github.io%2FNewWolfbot%2Fdashboard.html&scope=identify">
-        Mit Discord fortfahren
+        <i class="fab fa-discord"></i> Mit Discord fortfahren
       </a>
     </div>
     <p style="margin-top: 2rem;">© 2024 WolfBot, all rights reserved.</p>
