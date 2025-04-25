@@ -630,6 +630,113 @@
                     "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
             });
             window.location.href = "login.html";
+       function addNameAndAmountFields(predefinedValue = "", amount = 1) {
+            const container = document.getElementById('nameInputsContainer');
+            const inputContainer = document.createElement('div');
+            inputContainer.classList.add('input-container');
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.placeholder = 'Name';
+            nameInput.classList.add('input', 'name-input');
+            nameInput.value = predefinedValue;
+            inputContainer.appendChild(nameInput);
+
+            const amountInput = document.createElement('input');
+            amountInput.type = 'number';
+            amountInput.placeholder = '1';
+            amountInput.classList.add('input', 'amount-input');
+            amountInput.style.width = '80px';
+            amountInput.value = amount;
+            inputContainer.appendChild(amountInput);
+
+            container.appendChild(inputContainer);
+        }
+
+        function saveData() {
+            const inputContainers = document.querySelectorAll('.input-container');
+            const players = [];
+            
+            inputContainers.forEach(container => {
+                const nameInput = container.querySelector('.name-input');
+                const amountInput = container.querySelector('.amount-input');
+                
+                if (nameInput && nameInput.value) {
+                    const count = parseInt(amountInput.value) || 1;
+                    for (let i = 0; i < count; i++) {
+                        players.push(nameInput.value);
+                    }
+                }
+            });
+            
+            const price = document.getElementById('priceInputhead').value;
+            
+            Swal.fire({
+                title: 'Einstellungen gespeichert',
+                html: `Es werden <b>${players.length} Köpfe</b> zum Preis von <b>${price}$</b> pro Kopf angekauft.<br><br>
+                      <small>${players.slice(0, 5).join(', ')}${players.length > 5 ? '...' : ''}</small>`,
+                icon: 'success'
+            });
+            
+            // Hier würde normalerweise die Daten an den Server gesendet werden
+            console.log({
+                players: players,
+                pricePerHead: price
+            });
+        }
+
+        // Scan-Funktionen
+        function scan() {
+            Swal.fire({
+                title: "Verkaufskisten scannen",
+                text: "Der Bot wird nun alle Verkaufskisten scannen...",
+                icon: "info",
+                timer: 2000,
+                showConfirmButton: false
+            });
+            
+            // Hier würde normalerweise eine Anfrage an den Server gesendet werden
+            setTimeout(() => {
+                Swal.fire({
+                    title: "Scan abgeschlossen",
+                    text: "Alle Verkaufskisten wurden erfolgreich gescannt!",
+                    icon: "success"
+                });
+            }, 2000);
+        }
+
+        function scanAnkauf() {
+            Swal.fire({
+                title: "Ankaufskiste scannen",
+                input: "text",
+                inputPlaceholder: "X,Y,Z",
+                inputValue: "123,64,456",
+                showCancelButton: true,
+                confirmButtonText: "Scannen starten",
+                inputValidator: (value) => {
+                    if (!value) return 'Bitte Koordinaten eingeben';
+                    if (!value.match(/^-?\d+,-?\d+,-?\d+$/)) return 'Ungültiges Format (X,Y,Z)';
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Scan läuft...",
+                        text: `Scanne Kiste bei ${result.value}`,
+                        icon: "info",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    
+                    // Hier würde normalerweise eine Anfrage an den Server gesendet werden
+                    setTimeout(() => {
+                        Swal.fire({
+                            title: "Scan abgeschlossen",
+                            text: `Kiste bei ${result.value} wurde erfolgreich gescannt!`,
+                            icon: "success"
+                        });
+                    }, 2000);
+                }
+            });
         }
     </script>
 </body>
