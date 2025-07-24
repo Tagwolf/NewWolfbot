@@ -1,296 +1,458 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wolfbot - Konsole</title>
-    <link rel="icon" href="logo.png" type="image/png" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="icons.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        :root {
+            --primary-color: #3498db;
+            --primary-hover: #2980b9;
+            --sidebar-bg: #2c3e50;
+            --sidebar-hover: #34495e;
+            --content-bg: #f5f5f5;
+            --text-color: #333;
+            --box-bg: #ffffff;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --content-bg: #1a1a1a;
+            --text-color: #f0f0f0;
+            --box-bg: #2d2d2d;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
         }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--content-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
         .container {
             display: flex;
             min-height: 100vh;
         }
-        
-        /* Sidebar im Verkaufs/Ankauf-Style */
+
         .sidebar {
-            width: 250px;
-            background-color: #2c3e50;
+            width: 280px;
+            background-color: var(--sidebar-bg);
             color: white;
-            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            transition: var(--transition);
         }
-        
+
         .sidebar__logo {
             display: flex;
             align-items: center;
-            padding: 20px;
-            border-bottom: 1px solid #34495e;
-            margin-bottom: 10px;
-        }
-        
-        .sidebar__logo img {
-            border-radius: 50%;
-            margin-right: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        .sidebar__logo h2 {
-            margin: 0;
-            font-size: 18px;
-            color: #ecf0f1;
-        }
-        
-        .side-nav {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .side-nav__item {
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            border-left: 4px solid transparent;
-        }
-        
-        .side-nav__item:hover {
-            background-color: #34495e;
-        }
-        
-        .side-nav__item-active {
-            background-color: #34495e;
-            border-left: 4px solid #3498db;
-        }
-        
-        .side-nav__item i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-            color: #bdc3c7;
-        }
-        
-        .side-nav__item-active i {
-            color: #3498db;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Main Content */
+        .sidebar__logo img {
+            border-radius: 50%;
+        }
+
+        .sidebar__logo h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .side-nav {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .side-nav__header {
+            display: block;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 1.5rem 0 0.5rem;
+            padding: 0.5rem 0.5rem;
+        }
+
+        .side-nav__item {
+            padding: 0.75rem 0.75rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            margin: 0.25rem 0;
+        }
+
+        .side-nav__item:hover {
+            background-color: var(--sidebar-hover);
+        }
+
+        .side-nav__item-active {
+            background-color: var(--primary-color);
+        }
+
+        .side-nav__item span {
+            display: flex;
+            align-items: center;
+        }
+
+        .mr {
+            margin-right: 0.75rem;
+        }
+
         .main-content {
             flex: 1;
-            padding: 20px;
-        }
-        
-        .header {
-            margin-bottom: 30px;
-        }
-        
-        .header h1 {
-            font-size: 24px;
-            margin: 0;
-            color: #2c3e50;
-        }
-        
-        /* Console Box */
-        .console-box {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            height: calc(100vh - 200px);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        #console-output {
-            flex: 1;
+            padding: 2rem;
             overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 15px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-radius: 4px;
-            white-space: pre-wrap;
         }
-        
-        .console-input-container {
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
             display: flex;
+            align-items: center;
         }
-        
-        #console-input {
-            flex: 1;
-            padding: 10px;
+
+        .mr2 {
+            margin-right: 1rem;
+        }
+
+        .box {
+            background: var(--box-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .box h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 1rem;
+            resize: none;
+            padding: 0.75rem;
             border: 1px solid #ddd;
-            border-radius: 4px 0 0 4px;
-            font-family: 'Courier New', monospace;
+            border-radius: var(--border-radius);
+            background-color: var(--box-bg);
+            color: var(--text-color);
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            transition: var(--transition);
         }
-        
-        #console-send {
-            padding: 10px 15px;
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background-color: var(--box-bg);
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
             border: none;
-            border-radius: 0 4px 4px 0;
-            background-color: #3498db;
-            color: white;
+            border-radius: var(--border-radius);
             cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
         }
-        
-        #console-send:hover {
-            background-color: #2980b9;
+
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
         }
-        
-        /* Button Styles */
-        .button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 5px;
-            font-size: 14px;
+
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
         }
-        
-        .button-main {
-            background-color: #3498db;
-            color: white;
-        }
-        
-        .button-main:hover {
-            background-color: #2980b9;
-        }
-        
-        .button-secondary {
-            background-color: #e74c3c;
-            color: white;
-        }
-        
-        .button-secondary:hover {
-            background-color: #c0392b;
-        }
-        
-        /* Responsive Design */
+
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
             }
-            
+
             .sidebar {
                 width: 100%;
+                padding: 1rem;
             }
-            
-            .console-box {
-                height: auto;
-                min-height: 300px;
+
+            .main-content {
+                padding: 1rem;
             }
         }
     </style>
 </head>
 
-<body>
+<body class="light-mode">
     <div class="container">
         <nav class="sidebar" id="navbar">
             <div>
                 <div class="sidebar__logo">
-                    <img class="pixelated_image" src="https://mc-heads.net/avatar/Wolf/100" height="40" width="40" />
+                    <img class="pixelated_image" src="https://mc-heads.net/avatar/Wolf/100" height="40" width="40" alt="WolfBot Avatar">
                     <h2>WolfBot</h2>
                 </div>
 
+                <span class="side-nav__header"><span class="icon-users mr"></span>Account</span>
+
                 <ul class="side-nav">
-                    <li class="side-nav__item" onclick="window.location.href='dashboard.html'">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
+                    <span class="side-nav__header"><span class="icon-bookmark mr"></span>Menu</span>
+                    <li class="side-nav__item" onclick="navigateTo('dashboard.html')">
+                        <span><span class="icon-home3 mr"></span>Dashboard</span>
                     </li>
-                    <li class="side-nav__item side-nav__item-active">
-                        <i class="fas fa-terminal"></i>
-                        <span>Konsole</span>
+                    <li class="side-nav__item side-nav__item-active" onclick="navigateTo('konsole.html')">
+                        <span><span class="icon-terminal mr"></span>Konsole</span>
                     </li>
-                    <li class="side-nav__item" onclick="window.location.href='module.html'">
-                        <i class="fas fa-exchange-alt"></i>
-                        <span>Verkauf/Ankauf</span>
+                    <li class="side-nav__item" onclick="navigateTo('viewer.html')">
+                        <span><span class="icon-eye mr"></span>Viewer</span>
                     </li>
-                    <li class="side-nav__item" onclick="window.location.href='statistic.html'">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Statistik</span>
-                    </li>
-                    <li class="side-nav__item" onclick="window.location.href='einstellungen.html'">
-                        <i class="fas fa-cog"></i>
-                        <span>Einstellungen</span>
+                    <li class="side-nav__item" onclick="navigateTo('einstellungen.html')">
+                        <span><span class="icon-cogs mr"></span>Einstellungen</span>
                     </li>
                 </ul>
             </div>
 
             <ul class="side-nav">
-                <li class="side-nav__item last-item">
-                    <a onclick="deleteAllCookies()"><i class="fas fa-sign-out-alt"></i> Ausloggen</a>
+                <li class="side-nav__item" onclick="toggleDarkMode()">
+                    <span><span class="icon-brightness-contrast mr"></span>Dunkler/Heller Modus</span>
+                </li>
+                <li class="side-nav__item" onclick="logout()">
+                    <span><span class="icon-exit mr"></span>Ausloggen</span>
                 </li>
             </ul>
         </nav>
 
         <div class="main-content">
             <header class="header">
-                <h1><i class="fas fa-terminal"></i> Konsole</h1>
+                <h1><span class="icon-terminal mr2"></span>Konsole</h1>
             </header>
 
-            <div class="console-box">
-                <div id="console-output">
-Willkommen bei der WolfBot Konsole!
-Hier können Sie Befehle direkt an den Bot senden.
+            <div class="box">
+                <h3>Logs</h3>
+                <textarea id="logsbox" readonly>Willkommen bei Wolfbot Konsole!
+Hier werden Befehle und Antworten angezeigt.</textarea>
+                <div class="input-group">
+                    <input id="inputcmd" placeholder="Befehl eingeben und Enter drücken">
+                    <button onclick="sendCommand()">Senden</button>
+                </div>
+            </div>
 
-Status: Verbunden
-Bot: Online
-Version: 1.4.2
-> 
+            <div class="box">
+                <h3>Private Nachrichten</h3>
+                <textarea id="dmsbox" readonly>DM-Log wird hier angezeigt</textarea>
+                <input id="dmUser" placeholder="Benutzername">
+                <input id="dmMessage" placeholder="Nachricht">
+                <div class="button-group">
+                    <button onclick="sendDM()">Nachricht senden</button>
+                    <button onclick="clearDMs()">Log leeren</button>
                 </div>
-                
-                <div class="console-input-container">
-                    <input type="text" id="console-input" placeholder="Befehl eingeben...">
-                    <button id="console-send">Senden</button>
-                </div>
-                
-                <div style="margin-top: 15px;">
-                    <button class="button button-main" id="clear-console">
-                        <i class="fas fa-trash"></i> Konsole leeren
-                    </button>
-                    <button class="button button-secondary" id="restart-bot">
-                        <i class="fas fa-sync-alt"></i> Bot neustarten
-                    </button>
+            </div>
+
+            <div class="box">
+                <h3>Chat</h3>
+                <textarea id="chatbox" readonly>Chat-Nachrichten werden hier angezeigt</textarea>
+                <div class="button-group">
+                    <button onclick="clearChat()">Chat leeren</button>
+                    <button onclick="simulateMessage()">Testnachricht</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Navigation
-        document.querySelectorAll('.side-nav__item').forEach(item => {
-            item.addEventListener('click', function() {
-                if (!this.classList.contains('side-nav__item-active')) {
-                    document.querySelectorAll('.side-nav__item').forEach(i => {
-                        i.classList.remove('side-nav__item-active');
+        // Utility functions
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+
+        // Dark/Light Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('preferredMode', 
+                document.body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode');
+        }
+
+        // Load saved mode or default to light
+        function initializeTheme() {
+            const savedMode = localStorage.getItem('preferredMode') || 'light-mode';
+            document.body.classList.add(savedMode);
+        }
+
+        // Authentication functions
+        function logout() {
+            Swal.fire({
+                title: 'Ausloggen?',
+                text: 'Möchten Sie sich wirklich ausloggen?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3498db',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ja, ausloggen',
+                cancelButtonText: 'Abbrechen'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Clear cookies and redirect
+                    document.cookie.split(";").forEach(cookie => {
+                        document.cookie = cookie.replace(/^ +/, "").split("=")[0] + 
+                            "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
                     });
-                    this.classList.add('side-nav__item-active');
-                    
-                    // Hier würde normalerweise die Seite gewechselt werden
-                    const pageName = this.querySelector('span').textContent;
-                    console.log(`Navigiere zu: ${pageName}`);
+                    window.location.href = "login.html";
                 }
             });
-        });
+        }
 
-        // Console Funktionen
-        const consoleOutput = document.getElementById('console-output');
-        const consoleInput = document.getElementById('console-input');
-        const consoleSend = document.getElementById('console-send');
-        const clearConsoleBtn = document.getElementById('clear-console');
-        const restartBotBtn = document.getElementById('restart-bot');
-        
-        // Befehle senden
-        consoleSend.addEventListener('click', sendCommand
-<
+        // Console functions
+        function sendCommand() {
+            const cmdInput = document.getElementById('inputcmd');
+            const cmd = cmdInput.value.trim();
+            
+            if (!cmd) {
+                showAlert('Bitte einen Befehl eingeben', 'warning');
+                return;
+            }
+            
+            const logs = document.getElementById('logsbox');
+            logs.value += `\n> ${cmd}`;
+            
+            // Simulate response
+            setTimeout(() => {
+                logs.value += `\n[Antwort]: Befehl "${cmd}" wurde ausgeführt`;
+                logs.scrollTop = logs.scrollHeight;
+            }, 500);
+            
+            cmdInput.value = '';
+            cmdInput.focus();
+        }
+
+        function sendDM() {
+            const user = document.getElementById('dmUser').value.trim();
+            const msgInput = document.getElementById('dmMessage');
+            const msg = msgInput.value.trim();
+            
+            if (!user || !msg) {
+                showAlert('Bitte Benutzer und Nachricht eingeben', 'warning');
+                return;
+            }
+            
+            const dms = document.getElementById('dmsbox');
+            dms.value += `\n[DM an ${user}]: ${msg}`;
+            
+            // Simulate response
+            setTimeout(() => {
+                dms.value += `\n[${user}]: DM empfangen`;
+                dms.scrollTop = dms.scrollHeight;
+            }, 800);
+            
+            msgInput.value = '';
+            msgInput.focus();
+        }
+
+        function clearDMs() {
+            document.getElementById('dmsbox').value = '';
+        }
+
+        function clearChat() {
+            document.getElementById('chatbox').value = '';
+        }
+
+        function simulateMessage() {
+            const users = ['Player1', 'MinecraftFan', 'Wolf', 'BotUser', 'Guest123'];
+            const messages = [
+                'Hallo Leute!',
+                'Wie gehts?',
+                'Wer spielt heute Abend?',
+                'Der WolfBot ist super!',
+                'Testnachricht',
+                '👍'
+            ];
+            
+            const randomUser = users[Math.floor(Math.random() * users.length)];
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            
+            const chat = document.getElementById('chatbox');
+            chat.value += `\n[${randomUser}]: ${randomMessage}`;
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        // Helper functions
+        function showAlert(message, icon = 'info') {
+            Swal.fire({
+                title: message,
+                icon: icon,
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+
+        // Event listeners
+        function setupEventListeners() {
+            document.getElementById('inputcmd').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendCommand();
+            });
+            
+            document.getElementById('dmMessage').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendDM();
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeTheme();
+            setupEventListeners();
+            
+            const chat = document.getElementById('chatbox');
+            chat.value = "[System]: Willkommen bei Wolfbot!\n";
+            chat.value += "[System]: Diese Konsole simuliert die Bot-Funktionen.\n";
+            chat.scrollTop = chat.scrollHeight;
+        });
+    </script>
+</body>
+</html>
