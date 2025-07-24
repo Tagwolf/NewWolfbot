@@ -1,261 +1,491 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <title>Wolfbot - Lokales Dashboard</title>
-    <link rel="icon" href="logo.png" type="image/png" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wolfbot - Dashboard</title>
+    <link rel="icon" href="logo.png" type="image/png">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="icons.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        :root {
+            --primary-color: #3498db;
+            --primary-hover: #2980b9;
+            --success-color: #2ecc71;
+            --success-hover: #27ae60;
+            --danger-color: #e74c3c;
+            --danger-hover: #c0392b;
+            --warning-color: #f39c12;
+            --sidebar-bg: #2c3e50;
+            --sidebar-hover: #34495e;
+            --sidebar-active: #3498db;
+            --content-bg: #f5f5f5;
+            --text-color: #333;
+            --text-light: #777;
+            --box-bg: #ffffff;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --content-bg: #1a1a1a;
+            --text-color: #f0f0f0;
+            --text-light: #aaa;
+            --box-bg: #2d2d2d;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
         }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--content-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
         .container {
             display: flex;
             min-height: 100vh;
         }
-        
-        /* Überarbeitete Sidebar im Verkaufs/Ankauf-Stil */
+
         .sidebar {
-            width: 250px;
-            background-color: #2c3e50;
+            width: 280px;
+            background-color: var(--sidebar-bg);
             color: white;
-            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            transition: var(--transition);
         }
-        
+
         .sidebar__logo {
             display: flex;
             align-items: center;
-            padding: 20px;
-            border-bottom: 1px solid #34495e;
-            margin-bottom: 10px;
-        }
-        
-        .sidebar__logo img {
-            border-radius: 50%;
-            margin-right: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        .sidebar__logo h2 {
-            margin: 0;
-            font-size: 18px;
-            color: #ecf0f1;
-        }
-        
-        .side-nav {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .side-nav__item {
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            border-left: 4px solid transparent;
-        }
-        
-        .side-nav__item:hover {
-            background-color: #34495e;
-        }
-        
-        .side-nav__item-active {
-            background-color: #34495e;
-            border-left: 4px solid #3498db;
-        }
-        
-        .side-nav__item i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-            color: #bdc3c7;
-        }
-        
-        .side-nav__item-active i {
-            color: #3498db;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Rest bleibt unverändert */
+        .sidebar__logo img {
+            border-radius: 50%;
+        }
+
+        .sidebar__logo h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .side-nav {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .side-nav__header {
+            display: block;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 1.5rem 0 0.5rem;
+            padding: 0.5rem 0.5rem;
+        }
+
+        .side-nav__item {
+            padding: 0.75rem 0.75rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            margin: 0.25rem 0;
+        }
+
+        .side-nav__item:hover {
+            background-color: var(--sidebar-hover);
+        }
+
+        .side-nav__item-active {
+            background-color: var(--sidebar-active);
+        }
+
+        .side-nav__item span {
+            display: flex;
+            align-items: center;
+        }
+
+        .mr {
+            margin-right: 0.75rem;
+        }
+
         .main-content {
             flex: 1;
-            padding: 20px;
+            padding: 2rem;
+            overflow-y: auto;
         }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .mr2 {
+            margin-right: 1rem;
+        }
+
         .box {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: var(--box-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
         }
+
+        .box h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 1rem;
+            resize: none;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background-color: var(--box-bg);
+            color: var(--text-color);
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
         .button {
-            padding: 10px 15px;
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 4px;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            margin: 5px;
+            font-weight: 500;
+            transition: var(--transition);
         }
+
         .button-main {
-            background-color: #3498db;
+            background-color: var(--primary-color);
             color: white;
         }
-        .button-secondary {
-            background-color: #e74c3c;
+
+        .button-main:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .button-success {
+            background-color: var(--success-color);
             color: white;
         }
-        
-        /* Responsive Design */
+
+        .button-success:hover {
+            background-color: var(--success-hover);
+            transform: translateY(-1px);
+        }
+
+        .button-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .button-danger:hover {
+            background-color: var(--danger-hover);
+            transform: translateY(-1px);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+
+        .balance {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .status-online {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--success-color);
+        }
+
+        .status-offline {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--danger-color);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
             }
+
             .sidebar {
                 width: 100%;
+                padding: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<body>
+<body class="light-mode">
     <div class="container">
         <nav class="sidebar" id="navbar">
             <div>
                 <div class="sidebar__logo">
-                    <img class="pixelated_image" src="https://mc-heads.net/avatar/Wolf/100" height="40" width="40" />
+                    <img class="pixelated_image" src="https://mc-heads.net/avatar/Wolf/100" height="40" width="40" alt="WolfBot Avatar">
                     <h2>WolfBot</h2>
                 </div>
+
+                <span class="side-nav__header"><span class="icon-users mr"></span>Account</span>
+
                 <ul class="side-nav">
-                    <li class="side-nav__item" onclick="window.location.href='dashboard.html'">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
+                    <span class="side-nav__header"><span class="icon-bookmark mr"></span>Menu</span>
+                    <li class="side-nav__item" onclick="navigateTo('dashboard.html')">
+                        <span><span class="icon-home3 mr"></span>Dashboard</span>
                     </li>
-                    <li class="side-nav__item" onclick="window.location.href='console.html'">
-                        <i class="fas fa-terminal"></i>
-                        <span>Konsole</span>
+                    <li class="side-nav__item side-nav__item-active" onclick="navigateTo('konsole.html')">
+                        <span><span class="icon-terminal mr"></span>Konsole</span>
                     </li>
-                    <li class="side-nav__item side-nav__item-active">
-                        <i class="fas fa-exchange-alt"></i>
-                        <span>Verkauf/Ankauf</span>
+                    <li class="side-nav__item" onclick="navigateTo('viewer.html')">
+                        <span><span class="icon-eye mr"></span>Viewer</span>
                     </li>
-                    <li class="side-nav__item" onclick="window.location.href='statistic.html'">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Statistik</span>
-                    </li>
-                    <li class="side-nav__item" onclick="window.location.href='einstellungen.html'">
-                        <i class="fas fa-cog"></i>
-                        <span>Einstellungen</span>
+                    <li class="side-nav__item" onclick="navigateTo('einstellungen.html')">
+                        <span><span class="icon-cogs mr"></span>Einstellungen</span>
                     </li>
                 </ul>
             </div>
 
             <ul class="side-nav">
-                <li class="side-nav__item last-item">
-                    <a onclick="deleteAllCookies()"><i class="fas fa-sign-out-alt"></i> Ausloggen</a>
+                <li class="side-nav__item" onclick="toggleDarkMode()">
+                    <span><span class="icon-brightness-contrast mr"></span>Dunkler/Heller Modus</span>
+                </li>
+                <li class="side-nav__item" onclick="logout()">
+                    <span><span class="icon-exit mr"></span>Ausloggen</span>
                 </li>
             </ul>
         </nav>
 
         <div class="main-content">
             <header class="header">
-                <h1>Wolfbot Dashboard</h1>
+                <h1><span class="icon-home3 mr2"></span>Dashboard</h1>
+                <p>Übersicht über deinen WolfBot</p>
             </header>
 
-            <div class="box">
-                <h3>Kontostand (Konto)</h3>
-                <h1 id="money">0 €</h1>
+            <div class="grid">
+                <div class="box">
+                    <h3><span class="icon-wallet mr"></span>Kontostand (Konto)</h3>
+                    <div class="balance" id="money">0 €</div>
+                </div>
+
+                <div class="box">
+                    <h3><span class="icon-bank mr"></span>Kontostand (Bank)</h3>
+                    <div class="balance" id="bankmoney">0 €</div>
+                </div>
             </div>
 
             <div class="box">
-                <h3>Kontostand (Bank)</h3>
-                <h1 id="bankmoney">0 €</h1>
-            </div>
-
-            <div class="box">
-                <h3>Logs</h3>
-                <textarea id="logsbox" rows="6" style="width: 100%;" readonly>Willkommen bei Wolfbot!</textarea>
+                <h3><span class="icon-clipboard mr"></span>Aktivitätsprotokoll</h3>
+                <textarea id="logsbox" readonly>Willkommen bei Wolfbot!
+Hier werden Bot-Aktivitäten angezeigt.</textarea>
             </div>
 
             <div class="box" style="text-align: center;">
-                <h3 id="statusHeader">Status: Manueller Modus</h3>
-                <div class="buttons">
-                    <button class="button button-main" id="startButton">Start</button>
-                    <button class="button button-secondary" id="stopButton">Stop</button>
+                <div class="status-indicator status-offline" id="statusIndicator">
+                    <span class="icon-power-off"></span>
+                    <span>Status: Offline</span>
+                </div>
+                <h3>Bot Steuerung</h3>
+                <p id="statusDescription">Der Bot ist derzeit deaktiviert</p>
+                
+                <div class="button-group">
+                    <button class="button button-success" id="startButton">
+                        <span class="icon-play"></span> Starten
+                    </button>
+                    <button class="button button-danger" id="stopButton" disabled>
+                        <span class="icon-stop"></span> Stoppen
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Dark/Light Mode Toggle
-        const body = document.body;
-        body.classList.add('light-mode');
-        
-        // Beispiel-Daten (lokal)
+        // Utility functions
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('preferredMode', 
+                document.body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode');
+        }
+
+        function logout() {
+            Swal.fire({
+                title: 'Ausloggen?',
+                text: 'Möchten Sie sich wirklich ausloggen?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3498db',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ja, ausloggen',
+                cancelButtonText: 'Abbrechen'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Clear cookies and redirect
+                    document.cookie.split(";").forEach(cookie => {
+                        document.cookie = cookie.replace(/^ +/, "").split("=")[0] + 
+                            "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                    });
+                    window.location.href = "login.html";
+                }
+            });
+        }
+
+        // Bot data and state management
         let botData = {
-            money: "100 €",
-            bankmoney: "500 €",
-            logs: "Bot ist bereit.\nKeine Serververbindung.",
-            status: false,
-            statustext: "offline"
+            money: "100,50 €",
+            bankmoney: "500,75 €",
+            logs: [
+                "Willkommen bei Wolfbot!",
+                "Bot ist bereit.",
+                "Keine Serververbindung (Simulation)"
+            ],
+            status: false
         };
 
-        // UI aktualisieren
+        // Update UI with current data
         function updateUI() {
             document.getElementById('money').textContent = botData.money;
             document.getElementById('bankmoney').textContent = botData.bankmoney;
-            document.getElementById('logsbox').value = botData.logs;
+            document.getElementById('logsbox').value = botData.logs.join('\n');
             
-            const statusHeader = document.getElementById('statusHeader');
+            const statusIndicator = document.getElementById('statusIndicator');
+            const startButton = document.getElementById('startButton');
+            const stopButton = document.getElementById('stopButton');
+            const statusDescription = document.getElementById('statusDescription');
+            
             if (botData.status) {
-                statusHeader.textContent = "✅ Online (Simuliert)";
-                statusHeader.style.color = "green";
+                statusIndicator.className = 'status-indicator status-online';
+                statusIndicator.innerHTML = '<span class="icon-power-off"></span><span>Status: Online</span>';
+                statusDescription.textContent = 'Der Bot ist aktiv und verarbeitet Anfragen';
+                startButton.disabled = true;
+                stopButton.disabled = false;
             } else {
-                statusHeader.textContent = "❌ Offline (Simuliert)";
-                statusHeader.style.color = "red";
+                statusIndicator.className = 'status-indicator status-offline';
+                statusIndicator.innerHTML = '<span class="icon-power-off"></span><span>Status: Offline</span>';
+                statusDescription.textContent = 'Der Bot ist derzeit deaktiviert';
+                startButton.disabled = false;
+                stopButton.disabled = true;
             }
+            
+            // Scroll logs to bottom
+            const logsBox = document.getElementById('logsbox');
+            logsBox.scrollTop = logsBox.scrollHeight;
         }
 
-        // Button-Aktionen
-        document.getElementById('startButton').addEventListener('click', () => {
+        // Bot control functions
+        function startBot() {
             botData.status = true;
-            botData.statustext = "online";
-            botData.logs += "\nBot gestartet (simuliert).";
+            botData.logs.push(`[${new Date().toLocaleTimeString()}] Bot gestartet (Simulation)`);
             updateUI();
-            Swal.fire("Wolfbot gestartet (Simulation)");
-        });
-
-        document.getElementById('stopButton').addEventListener('click', () => {
-            botData.status = false;
-            botData.statustext = "offline";
-            botData.logs += "\nBot gestoppt (simuliert).";
-            updateUI();
-            Swal.fire("Wolfbot gestoppt (Simulation)");
-        });
-
-        // Navigation - Neu hinzugefügt für die Sidebar
-        document.querySelectorAll('.side-nav__item').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.side-nav__item').forEach(i => {
-                    i.classList.remove('side-nav__item-active');
-                });
-                this.classList.add('side-nav__item-active');
-                
-                // Hier würde normalerweise die Seite gewechselt werden
-                const pageName = this.querySelector('span').textContent;
-                console.log(`Navigiere zu: ${pageName}`);
+            
+            Swal.fire({
+                title: 'Bot gestartet',
+                text: 'Der Bot ist jetzt aktiv (Simulation)',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
             });
-        });
+        }
 
-        // Initiale UI-Aktualisierung
-        updateUI();
+        function stopBot() {
+            botData.status = false;
+            botData.logs.push(`[${new Date().toLocaleTimeString()}] Bot gestoppt (Simulation)`);
+            updateUI();
+            
+            Swal.fire({
+                title: 'Bot gestoppt',
+                text: 'Der Bot wurde deaktiviert (Simulation)',
+                icon: 'info',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
+
+        // Event listeners
+        function setupEventListeners() {
+            document.getElementById('startButton').addEventListener('click', startBot);
+            document.getElementById('stopButton').addEventListener('click', stopBot);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load theme preference
+            const savedMode = localStorage.getItem('preferredMode') || 'light-mode';
+            document.body.classList.add(savedMode);
+            
+            // Initialize
+            setupEventListeners();
+            updateUI();
+        });
     </script>
 </body>
 </html>
